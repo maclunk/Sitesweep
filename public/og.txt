@@ -1,0 +1,11 @@
+Open Graph Image Placeholder
+
+Diese Datei ist ein Platzhalter für das Open Graph Image (og.jpg).
+
+Bitte ersetzen Sie diese Datei durch ein echtes Bild:
+- Dateiname: og.jpg (oder og.png)
+- Empfohlene Größe: 1200x630px
+- Format: JPG oder PNG
+- Dateipfad: /public/og.jpg
+
+Das Bild wird für Social Media Previews (Facebook, Twitter, LinkedIn, etc.) verwendet.

@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model ScanJob {
+  id          String      @id @default(cuid())
+  url         String
+  status      String // "pending" | "running" | "done" | "error"
+  createdAt   DateTime    @default(now())
+  finishedAt  DateTime?
+  error       String?
+  batchId     String? // optional: identifies a bulk scan batch
+  label       String? // optional: Firmen-/Praxisname (z. B. "Zahnarztpraxis Müller")
+  leadId      String? // optional: relation to Lead (for KMU-Finder integration)
+  lead        Lead?       @relation(fields: [leadId], references: [id], onDelete: SetNull)
+  result      ScanResult?
+  industry       String? // optional: Branche (z. B. "Zahnarzt", "Anwalt")
+  city           String? // optional: Stadt (z. B. "Köln")
+  postalCode     String? // optional: Postleitzahl
+  companyName    String? // optional: Firmenname
+  competitorName String? // optional: Name eines Konkurrenten (nur manuell durch Admin gesetzt, nie auto-generiert)
+
+  // Migration für batchId: 20251118230415_add_batch_id_to_scan_job
+  // Migration für label: 20251119091916_add_label_to_scan_job
+}
+
+model ScanResult {
+  id                  String   @id @default(cuid())
+  scanJobId           String   @unique
+  score               Int // Finaler Score (0-100, normalisiert)
+  scoreRaw            Int? // Optional: Roh-Score vor Normalisierung (0-100)
+  summary             String
+  issues              Json
+  scoreBreakdown      Json? // Strukturierte Score-Aufschlüsselung: { technical, seo, legal, uxDesign, rawOverall }
+  mobileScreenshotUrl String?
+  adminNote           String? // Optional: Admin-Notiz für diesen Scan
+  createdAt           DateTime @default(now())
+  scanJob             ScanJob  @relation(fields: [scanJobId], references: [id], onDelete: Cascade)
+}
+
+// Lead-Search-Job: Repräsentiert eine Lead-Suche (Branche + Stadt)
+// Ein LeadSearchJob kann mehrere Leads haben (1:N Relation)
+model LeadSearchJob {
+  id         String    @id @default(cuid())
+  category   String // Branche, z.B. "Zahnarzt"
+  city       String // Stadt, z.B. "Köln"
+  limit      Int // Maximale Anzahl Ergebnisse
+  status     String // "pending" | "running" | "done" | "error"
+  error      String? // Optionale Fehlermeldung
+  createdAt  DateTime  @default(now())
+  finishedAt DateTime?
+  leads      Lead[] // Alle Leads dieses Jobs (1:N Relation)
+}
+
+// Lead: Ein einzelner Business-Lead (Name, Website, Kontakt, etc.)
+// Gehört zu einem LeadSearchJob (N:1 Relation)
+model Lead {
+  id             String        @id @default(cuid())
+  jobId          String // ID des LeadSearchJob
+  job            LeadSearchJob @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  name           String // Firmenname
+  website        String? // Website-URL
+  email          String? // E-Mail-Adresse
+  phone          String? // Telefonnummer
+  address        String? // Straße und Hausnummer
+  city           String? // Stadt
+  category       String? // Branche
+  source         String? // Datenquelle (z.B. Domain des Verzeichnisses)
+  sourceUrl      String? // Konkrete URL, auf der der Eintrag gefunden wurde
+  status         String        @default("NEW") // NEW | CONTACTED | BOOKED | CLOSED
+  notes          String? // Admin-Notizen/Timeline
+  lastActivityAt DateTime? // Letzte Aktivität (Status-Update, Note, etc.)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @default(now()) @updatedAt
+  scanJobs       ScanJob[] // ScanJobs für diese Lead-Website (1:N Relation)
+  competitorName String? // optional: Name eines Konkurrenten (nur manuell durch Admin gesetzt, nie auto-generiert)
+}
+
+model BenchmarkAggregate {
+  id         String   @id @default(cuid())
+  industry   String
+  city       String
+  avgScore   Float
+  sampleSize Int
+  updatedAt  DateTime @default(now()) @updatedAt
+
+  @@unique([industry, city])
+  @@index([industry, city])
+}
