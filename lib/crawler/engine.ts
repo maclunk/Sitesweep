@@ -12,7 +12,17 @@
  * - SPA-Erkennung
  */
 
-import puppeteer, { Browser, Page } from 'puppeteer'
+// Optional puppeteer import (for local development only)
+let puppeteer: any
+try {
+  const puppeteerModule = require('puppeteer')
+  puppeteer = puppeteerModule.default || puppeteerModule
+} catch {
+  // Puppeteer not available (expected in Vercel deployment)
+}
+
+type Browser = any
+type Page = any
 import {
   normalizeUrl,
   removeTrackingParams,
@@ -235,7 +245,7 @@ async function crawlPage(
       
       // Resource interception
       await page.setRequestInterception(true)
-      page.on('request', (request) => {
+      page.on('request', (request: any) => {
         const requestUrl = request.url()
         const resourceType = request.resourceType()
         
@@ -250,9 +260,9 @@ async function crawlPage(
       
       // Track redirects
       const redirects: string[] = [url]
-      page.on('request', (request) => {
+      page.on('request', (request: any) => {
         if (request.redirectChain().length > 0) {
-          redirects.push(...request.redirectChain().map(r => r.url()))
+          redirects.push(...request.redirectChain().map((r: any) => r.url()))
         }
       })
       
@@ -260,7 +270,7 @@ async function crawlPage(
       const startTime = Date.now()
       
       // Console errors
-      page.on('console', (msg) => {
+      page.on('console', (msg: any) => {
         if (msg.type() === 'error') {
           const text = msg.text()
           if (text && !text.includes('favicon') && !text.includes('ERR_')) {
@@ -464,7 +474,7 @@ async function crawlPage(
         assets: {
           css: pageData.cssLinks,
           js: pageData.jsLinks,
-          images: pageData.images.map(img => ({ ...img, size: 0 })), // Size wird später gefüllt
+          images: pageData.images.map((img: any) => ({ ...img, size: 0 })), // Size wird später gefüllt
         },
         loadErrors,
         timings: {
@@ -562,6 +572,11 @@ export async function crawlWebsite(url: string): Promise<CrawlEngineResult> {
   let browser: Browser | null = null
   
   try {
+    // Check if puppeteer is available
+    if (!puppeteer) {
+      throw new Error('Crawler engine is not available. Puppeteer has been removed for Vercel compatibility.')
+    }
+
     browser = await puppeteer.launch({
       headless: true,
       args: [

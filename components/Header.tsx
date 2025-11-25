@@ -48,7 +48,7 @@ export default function Header() {
               SiteSweep
             </span>
             <span className="hidden md:inline text-xs text-slate-600 font-medium">
-              Der rechtssichere Website-Check für KMU
+              Der technisch abgesicherte Website-Check für KMU
             </span>
           </Link>
           

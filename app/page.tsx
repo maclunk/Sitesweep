@@ -154,7 +154,6 @@ const UrlInputSection = ({
 
 export default function Home() {
   const [url, setUrl] = useState('')
-  const [jobId, setJobId] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [isScanning, setIsScanning] = useState(false)
   const [result, setResult] = useState<ScanResult | null>(null)
@@ -168,7 +167,6 @@ export default function Home() {
     if (pathname === '/') {
       // Reset alle States beim Zurückkehren zur Homepage
       setUrl('')
-      setJobId(null)
       setLoading(false)
       setIsScanning(false)
       setResult(null)
@@ -181,7 +179,6 @@ export default function Home() {
   useEffect(() => {
     const handleReset = () => {
       setUrl('')
-      setJobId(null)
       setLoading(false)
       setIsScanning(false)
       setResult(null)
@@ -220,11 +217,11 @@ export default function Home() {
     setResult(null)
     setLoading(true)
     setIsScanning(true)
-    setJobId(null)
 
     try {
       console.log('[Frontend] Starting scan for URL:', normalizedUrl)
       
+      // Send request and await full response (synchronous flow)
       const response = await fetch('/api/scan/start', {
         method: 'POST',
         headers: {
@@ -239,15 +236,33 @@ export default function Home() {
       }
 
       const data = await response.json()
-      console.log('[Frontend] Scan start response:', data)
+      console.log('[Frontend] Scan response:', data)
 
-      const jobId = data.success && data.data ? data.data.jobId : data.jobId
-      if (!jobId) {
-        throw new Error('Keine Job-ID erhalten')
+      // Extract result data - handle both response formats
+      const resultData = data.success && data.data ? data.data : data
+      
+      // Check if we have a complete result
+      if (resultData.status === 'done' || resultData.score !== undefined) {
+        setResult({
+          status: resultData.status || 'done',
+          score: resultData.score || 0,
+          summary: resultData.summary || '',
+          issues: Array.isArray(resultData.issues) ? resultData.issues : [],
+          mobileScreenshotUrl: resultData.mobileScreenshotUrl || null,
+          industry: resultData.industry || null,
+          city: resultData.city || null,
+          competitorName: resultData.competitorName || null,
+          url: resultData.url || normalizedUrl || null,
+          lowHangingFruit: resultData.lowHangingFruit || null,
+        })
+      } else if (resultData.error) {
+        throw new Error(resultData.error)
+      } else {
+        throw new Error('Ungültige Antwort vom Scanner-Service')
       }
 
-      console.log('[Frontend] Job ID received:', jobId)
-      setJobId(jobId)
+      setLoading(false)
+      setIsScanning(false)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Fehler beim Starten des Scans'
       setError(errorMessage)
@@ -256,72 +271,6 @@ export default function Home() {
       console.error('[Frontend] Error starting scan:', err)
     }
   }
-
-  useEffect(() => {
-    if (!jobId) return
-
-    const startTime = Date.now()
-    const MAX_SCAN_TIME = 5 * 60 * 1000 // 5 Minuten Timeout (erhöht von 60 Sekunden)
-    let pollCount = 0
-
-    const pollStatus = async () => {
-      try {
-        // Performance: Timeout nach 5 Minuten (Worker braucht mehr Zeit für Crawl + Screenshot)
-        if (Date.now() - startTime > MAX_SCAN_TIME) {
-          setError('Die Analyse dauert länger als erwartet. Bitte versuchen Sie es später erneut oder wählen Sie eine andere URL.')
-          setLoading(false)
-          setIsScanning(false)
-          return
-        }
-
-        pollCount++
-        const response = await fetch(`/api/scan/status?id=${encodeURIComponent(jobId)}`)
-        
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}))
-          throw new Error(errorData.error || `HTTP ${response.status}: Fehler beim Abrufen des Status`)
-        }
-
-        const data = await response.json()
-        
-        const statusData = data.success && data.data ? data.data : data
-        const status = statusData.status
-
-        if (status === 'done') {
-          setResult({
-            status: status,
-            score: statusData.score || 0,
-            summary: statusData.summary || '',
-            issues: Array.isArray(statusData.issues) ? statusData.issues : [],
-            mobileScreenshotUrl: statusData.mobileScreenshotUrl || null,
-            industry: statusData.industry || null,
-            city: statusData.city || null,
-            competitorName: statusData.competitorName || null,
-            url: statusData.url || url || null,
-            lowHangingFruit: statusData.lowHangingFruit || null,
-          })
-          setLoading(false)
-          setIsScanning(false)
-        } else if (status === 'error') {
-          setError(statusData.error || 'Für diese Website ist beim Scan ein Fehler aufgetreten. Bitte versuchen Sie es später erneut oder wählen Sie eine andere URL.')
-          setLoading(false)
-          setIsScanning(false)
-        } else {
-          // Status ist "pending" oder "running", weiter pollen
-          // Performance: Polling-Intervall 2-3 Sekunden
-          setTimeout(pollStatus, 2500)
-        }
-      } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : 'Bei der Analyse ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns.'
-        setError(errorMessage)
-        setLoading(false)
-        setIsScanning(false)
-        console.error('Error polling status:', err)
-      }
-    }
-
-    pollStatus()
-  }, [jobId])
 
   // Gruppiere Issues nach Severity
   const groupIssuesBySeverity = (issues: any[]) => {

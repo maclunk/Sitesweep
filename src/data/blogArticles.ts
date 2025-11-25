@@ -398,7 +398,7 @@ In den letzten Jahren hat sich – auch dank moderner Technik – eine neue Kate
 
 Das Prinzip: Es wird nicht das Rad neu erfunden. Man nutzt bewährte, moderne technische Standards (Frameworks), passt diese individuell an und verzichtet auf teure Büros.
 
-Das Ergebnis: Eine technisch perfekte, rechtssichere Seite zu einem fairen Festpreis.
+Das Ergebnis: Eine technisch perfekte, rechtskonforme Seite zu einem fairen Festpreis.
 
 ## Warum Stundenlöhne der Feind sind
 Viele Agenturen rechnen nach Stunden ab (oft 100 € bis 150 €). Das Problem: Wenn der Programmierer länger braucht, zahlen Sie mehr. Das Risiko liegt bei Ihnen.

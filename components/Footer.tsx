@@ -25,7 +25,7 @@ export default function Footer() {
           <div className="md:col-span-1">
             <h4 className="text-lg font-bold text-slate-900 mb-3">SiteSweep</h4>
             <p className="text-sm text-slate-700 leading-relaxed mb-4">
-              Der rechtssichere Website-Check für KMU. Rechtssicher, schnell, transparent.
+              Der technisch abgesicherte Website-Check für KMU. Rechtskonform, schnell, transparent.
             </p>
             <div className="space-y-2 text-sm">
               <a 

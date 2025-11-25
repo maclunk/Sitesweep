@@ -82,17 +82,9 @@ function AutoFixPage() {
     setError(null)
 
     try {
-      const response = await fetch(`/api/scan/status?id=${encodeURIComponent(jobId)}`)
-      const data = await response.json()
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Fehler beim Laden der Issues')
-      }
-
-      const issuesData = data.success && data.data ? data.data.issues : data.issues
-      if (Array.isArray(issuesData)) {
-        setIssues(issuesData)
-      }
+      // Note: Status endpoint removed - autofix feature requires database
+      // This feature is temporarily disabled in stateless mode
+      throw new Error('Autofix-Funktion ist in der stateless-Version nicht verfügbar. Die Status-API wurde entfernt.')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Fehler beim Laden der Issues')
     } finally {

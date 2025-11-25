@@ -1,6 +1,16 @@
-import puppeteer, { Browser, Page } from 'puppeteer'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
+
+// Optional puppeteer import (for local development only)
+let puppeteer: any
+try {
+  puppeteer = require('puppeteer')
+} catch {
+  // Puppeteer not available (expected in Vercel deployment)
+}
+
+type Browser = any
+type Page = any
 
 /**
  * Erstellt einen mobilen Screenshot der Startseite
@@ -32,6 +42,11 @@ export async function createMobileScreenshot(
         console.debug('Error closing browser:', closeError)
       }
     }
+  }
+
+  // Check if puppeteer is available
+  if (!puppeteer) {
+    throw new Error('Screenshot generation is not available. Puppeteer has been removed for Vercel compatibility.')
   }
 
   try {

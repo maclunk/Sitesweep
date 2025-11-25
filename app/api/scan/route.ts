@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  console.log("API /api/scan/start called");
+  console.log("API /api/scan called");
 
   try {
     // 1. Parse Request
@@ -47,3 +47,4 @@ export async function POST(req: Request) {
     }, { status: 500 });
   }
 }
+

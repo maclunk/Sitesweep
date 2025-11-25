@@ -1,4 +1,3 @@
-import puppeteer from 'puppeteer'
 import { CheckResult } from './checks'
 
 interface PDFReport {
@@ -10,7 +9,20 @@ interface PDFReport {
   mobileScreenshotUrl?: string | null
 }
 
+// PDF generation is disabled in Vercel deployment (puppeteer too large for serverless)
+// This feature should be moved to the external scanner service
 export async function createPDF(report: PDFReport): Promise<Buffer> {
+  // Check if puppeteer is available (for local development)
+  let puppeteer: any
+  try {
+    puppeteer = require('puppeteer')
+  } catch (error) {
+    throw new Error(
+      'PDF generation is not available. Puppeteer has been removed for Vercel compatibility. ' +
+      'Please use the external scanner service for PDF generation.'
+    )
+  }
+
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],

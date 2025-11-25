@@ -22,6 +22,27 @@ export function BeforeAfterSlider({
   const containerRef = useRef<HTMLDivElement | null>(null);
   const draggingRef = useRef(false);
   const [pos, setPos] = useState(50);
+  const [containerHeight, setContainerHeight] = useState(height);
+
+  // Calculate responsive height based on viewport width
+  useEffect(() => {
+    const updateHeight = () => {
+      if (typeof window === 'undefined') return;
+      
+      const isMobile = window.innerWidth < 640; // sm breakpoint
+      if (isMobile) {
+        // On mobile: use 70% of height, max 280px for better visibility
+        setContainerHeight(Math.min(height * 0.7, 280));
+      } else {
+        // On desktop: use full height
+        setContainerHeight(height);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, [height]);
 
   const setFromClientX = useCallback((clientX: number) => {
     const el = containerRef.current;
@@ -78,26 +99,26 @@ export function BeforeAfterSlider({
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full px-2 sm:px-0">
       <div
         ref={containerRef}
-        className="relative w-full overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-lg select-none"
+        className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-100 shadow-lg select-none"
         style={{ 
-          height,
+          height: `${containerHeight}px`,
           touchAction: 'none',
           userSelect: 'none',
           WebkitUserSelect: 'none',
         }}
       >
-        {/* AFTER (full background) - starr, keine Transformation */}
+        {/* AFTER (full background) - contain on mobile, cover on desktop for better visibility */}
         <div className="absolute inset-0 pointer-events-none">
           <Image
             src={afterSrc}
             alt={afterLabel}
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 900px"
-            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 900px"
+            className="object-contain sm:object-cover"
             style={{ 
               objectPosition: 'center center',
               pointerEvents: 'none',
@@ -108,7 +129,7 @@ export function BeforeAfterSlider({
           />
         </div>
 
-        {/* BEFORE (clipped overlay) - starr, genau an der Slider-Kante */}
+        {/* BEFORE (clipped overlay) - contain on mobile, cover on desktop */}
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -120,8 +141,8 @@ export function BeforeAfterSlider({
             alt={beforeLabel}
             fill
             priority
-            sizes="(max-width: 1024px) 100vw, 900px"
-            className="object-cover"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 90vw, 900px"
+            className="object-contain sm:object-cover"
             style={{ 
               objectPosition: 'left center',
               pointerEvents: 'none',
@@ -142,7 +163,7 @@ export function BeforeAfterSlider({
           }}
         />
 
-        {/* Divider + handle - visual indicator only */}
+        {/* Divider + handle - responsive sizing */}
         <div
           className="absolute inset-y-0 z-30 pointer-events-none"
           style={{ 
@@ -152,17 +173,17 @@ export function BeforeAfterSlider({
         >
           <div className="flex h-full items-center justify-center">
             <div className="h-full w-px bg-white/90 shadow-[0_0_0_1px_rgba(0,0,0,0.25)]" />
-            <div className="absolute flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg border-2 border-slate-300 text-slate-700 text-lg font-medium">
+            <div className="absolute flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-white shadow-lg border-2 border-slate-300 text-slate-700 text-sm sm:text-lg font-medium">
               ↔
             </div>
           </div>
         </div>
 
-        {/* Labels */}
-        <div className="absolute bottom-3 left-3 rounded bg-white/90 px-2 py-1 text-xs font-medium text-slate-700 pointer-events-none z-10">
+        {/* Labels - responsive sizing and positioning */}
+        <div className="absolute bottom-2 left-2 sm:bottom-3 sm:left-3 rounded bg-white/90 px-2 py-1 text-[10px] sm:text-xs font-medium text-slate-700 pointer-events-none z-10">
           {beforeLabel}
         </div>
-        <div className="absolute bottom-3 right-3 rounded bg-white/90 px-2 py-1 text-xs font-medium text-slate-700 pointer-events-none z-10">
+        <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 rounded bg-white/90 px-2 py-1 text-[10px] sm:text-xs font-medium text-slate-700 pointer-events-none z-10">
           {afterLabel}
         </div>
       </div>

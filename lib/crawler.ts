@@ -1,6 +1,16 @@
-import puppeteer, { Browser } from 'puppeteer'
 import { normalizeUrl, sameDomain } from './utils'
 import { SAFE_MODE } from './config'
+
+// Optional puppeteer import (for local development only)
+let puppeteer: any
+try {
+  const puppeteerModule = require('puppeteer')
+  puppeteer = puppeteerModule.default || puppeteerModule
+} catch {
+  // Puppeteer not available (expected in Vercel deployment)
+}
+
+type Browser = any
 
 export interface CrawlResult {
   pages: Array<{
@@ -344,6 +354,11 @@ export async function crawl(url: string): Promise<CrawlResult> {
     }
   }
 
+  // Check if puppeteer is available
+  if (!puppeteer) {
+    throw new Error('Crawler is not available. Puppeteer has been removed for Vercel compatibility. Use SCANNER_API_URL for scanning.')
+  }
+
   let browser: Browser | null = null
 
   try {
@@ -423,7 +438,7 @@ export async function crawl(url: string): Promise<CrawlResult> {
 
           // Resource interception - nur HTML, CSS, JS, IMG, Fonts
           await page.setRequestInterception(true)
-          page.on('request', (request) => {
+          page.on('request', (request: any) => {
             const requestUrl = request.url()
             
             // Ignoriere externe Domains
@@ -457,7 +472,7 @@ export async function crawl(url: string): Promise<CrawlResult> {
           const consoleErrors: string[] = []
 
           // Track console errors - only critical ones
-          page.on('console', (msg) => {
+          page.on('console', (msg: any) => {
             if (msg.type() === 'error') {
               const text = msg.text()
               // Filter out common non-critical errors
@@ -474,7 +489,7 @@ export async function crawl(url: string): Promise<CrawlResult> {
           })
 
           // Track resource sizes
-          page.on('response', async (response) => {
+          page.on('response', async (response: any) => {
             try {
               const responseUrl = response.url()
               
@@ -506,7 +521,7 @@ export async function crawl(url: string): Promise<CrawlResult> {
           })
 
           // Handle request failures
-          page.on('requestfailed', (request) => {
+          page.on('requestfailed', (request: any) => {
             if (request.resourceType() === 'document') {
               const failure = request.failure()
               if (failure && failure.errorText) {
@@ -522,7 +537,7 @@ export async function crawl(url: string): Promise<CrawlResult> {
           let ttfb: number | undefined
 
           // Track TTFB from response
-          page.on('response', (response) => {
+          page.on('response', (response: any) => {
             if (response.request().resourceType() === 'document' && !ttfb) {
               ttfb = Date.now() - timingsStart
             }
@@ -848,7 +863,7 @@ export async function crawl(url: string): Promise<CrawlResult> {
           const timingsTotal = Date.now() - timingsStart
 
           // Update image sizes from tracked resources
-          const imagesWithSizes = pageData.images.map((img) => ({
+          const imagesWithSizes = pageData.images.map((img: any) => ({
             ...img,
             size: resourceSizes.get(img.src) || 0,
           }))

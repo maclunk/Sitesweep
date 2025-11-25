@@ -169,7 +169,7 @@ export default function LeistungenPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-700">Rechtssichere Seiten (Impressum/Datenschutz)</span>
+                    <span className="text-slate-700">Rechtskonforme Seiten (Impressum/Datenschutz)</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
