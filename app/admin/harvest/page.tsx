@@ -319,7 +319,7 @@ export default function HarvestPage() {
                       </span>
                     </div>
                     <button
-                      onClick={() => handleCopy(selectedPage.content, 'content')}
+                      onClick={() => handleCopy(selectedPage.content || '', 'content')}
                       className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
                     >
                       {copiedStates['content'] ? (
