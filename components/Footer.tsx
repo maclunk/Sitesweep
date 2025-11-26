@@ -95,20 +95,20 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
-                <a 
+                <Link 
                   href="/impressum" 
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   Impressum
-                </a>
+                </Link>
               </li>
               <li>
-                <a 
+                <Link 
                   href="/datenschutz" 
                   className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
                 >
                   Datenschutz
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
