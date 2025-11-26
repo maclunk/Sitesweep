@@ -368,7 +368,7 @@ export default function Home() {
                       Sichtbarkeit & Google
                     </h2>
                     <p className="text-sm text-slate-600 mb-4">
-                      Bessere Platzierung bei Google führt zu mehr Besuchern und mehr Anfragen
+                      Bessere Platzierung bei Google führt zu mehr Besuchern und mehr Anfragen.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -403,7 +403,7 @@ export default function Home() {
                       Technischer Zustand
                     </h2>
                     <p className="text-sm text-slate-600 mb-4">
-                      Schnelle Ladezeiten und saubere Technik sorgen dafür, dass Besucher bleiben und nicht sofort wegklicken
+                      Schnelle Ladezeiten und saubere Technik sorgen dafür, dass Besucher bleiben und nicht sofort wegklicken.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -443,7 +443,7 @@ export default function Home() {
                       UX & Design
                     </h2>
                     <p className="text-sm text-slate-600 mb-4">
-                      Einfache Bedienung und klare Buttons führen zu mehr Anfragen und Bestellungen
+                      Einfache Bedienung und klare Buttons führen zu mehr Anfragen und Bestellungen.
                     </p>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
@@ -542,7 +542,7 @@ export default function Home() {
                     ),
                   },
                   {
-                    question: 'Seid ihr eine teure Agentur mit langen Verträgen?',
+                    question: 'Sind Sie eine teure Agentur mit langen Verträgen?',
                     answer: (
                       <>
                         Nein. Wir sind ein spezialisiertes Team, das sich darauf konzentriert, kleinen und mittleren Unternehmen zu mehr Kunden zu verhelfen.<br /><br />

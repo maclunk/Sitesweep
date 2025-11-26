@@ -261,7 +261,7 @@ Ist Ihre Seite nicht für Mobilgeräte optimiert ("responsive"), werden Sie in d
 Eine echte mobile Optimierung (Responsive Design) bedeutet mehr, als dass die Seite nur "angezeigt" wird.
 
 - **Lesbarkeit ohne Zoom:** Die Schrift muss groß genug sein, um sie ohne Hilfsmittel zu lesen.
-- **Daumen-freundliche Buttons:** Links und Buttons müssen so groß sein, dass man sie bequem mit dem Daumen trifft, ohne Nachbadelemente zu berühren.
+- **Daumen-freundliche Buttons:** Links und Buttons müssen so groß sein, dass man sie bequem mit dem Daumen trifft, ohne Nachbarelemente zu berühren.
 - **Anklickbare Telefonnummern:** Ein Klick auf die Nummer muss sofort den Anruf starten. Niemand will eine Nummer abschreiben und in die Telefon-App tippen.
 - **Keine horizontalen Balken:** Man darf niemals seitwärts scrollen müssen.
 

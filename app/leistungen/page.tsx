@@ -317,7 +317,7 @@ export default function LeistungenPage() {
                   + 199 €
                 </div>
                 <p className="text-slate-600 flex-grow">
-                  Integration von WhatsApp, Calendly, Doctolib oder Mobile.de-Links für einfache Erreichbarkeit.
+                  Integration von WhatsApp, Calendly, Doctolib oder mobile.de-Links für einfache Erreichbarkeit.
                 </p>
               </motion.div>
 
