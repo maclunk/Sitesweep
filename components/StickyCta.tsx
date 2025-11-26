@@ -30,7 +30,7 @@ export default function StickyCta() {
   if (!isVisible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-t border-slate-200 shadow-soft-lg px-4 py-3">
+    <div className="hidden md:block fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-sm border-t border-slate-200 shadow-soft-lg px-4 py-3">
       <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 flex-wrap">
         <p className="text-sm font-medium text-slate-900">
           Finden Sie heraus, wie viele neue Kunden Sie gewinnen könnten

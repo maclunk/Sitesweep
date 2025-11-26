@@ -10,6 +10,7 @@ import {
   Settings,
   Activity,
   ChevronLeft,
+  Microscope,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -21,6 +22,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: 'Dashboard', href: '/admin', icon: LayoutDashboard },
+  { label: 'Deep Scan', href: '/admin/scan', icon: Microscope },
   { label: 'Scans', href: '/admin/scans', icon: Search },
   { label: 'Leads', href: '/admin/leads', icon: Users },
   { label: 'Mass Scan', href: '/admin/mass-scan', icon: FileText },

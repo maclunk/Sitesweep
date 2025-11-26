@@ -2,6 +2,62 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 export function middleware(request: NextRequest) {
+  // ==========================================
+  // 1. ADMIN ROUTE PROTECTION (Basic Auth)
+  // ==========================================
+  if (request.nextUrl.pathname.startsWith('/admin')) {
+    const authHeader = request.headers.get('authorization')
+    
+    // Check if Basic Auth header exists
+    if (!authHeader || !authHeader.startsWith('Basic ')) {
+      return new NextResponse('Authentication required', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Admin Area"',
+        },
+      })
+    }
+
+    // Decode and validate credentials
+    try {
+      const base64Credentials = authHeader.split(' ')[1]
+      const credentials = Buffer.from(base64Credentials, 'base64').toString('utf-8')
+      const [username, password] = credentials.split(':')
+
+      const validUsername = process.env.ADMIN_USER
+      const validPassword = process.env.ADMIN_PASSWORD
+
+      // Check if env variables are set
+      if (!validUsername || !validPassword) {
+        console.error('[Middleware] ADMIN_USER or ADMIN_PASSWORD not set in environment variables')
+        return new NextResponse('Server configuration error', { status: 500 })
+      }
+
+      // Validate credentials
+      if (username !== validUsername || password !== validPassword) {
+        return new NextResponse('Invalid credentials', {
+          status: 401,
+          headers: {
+            'WWW-Authenticate': 'Basic realm="Admin Area"',
+          },
+        })
+      }
+
+      // Credentials valid - continue to admin area
+    } catch (error) {
+      console.error('[Middleware] Error parsing Basic Auth:', error)
+      return new NextResponse('Invalid authorization format', {
+        status: 401,
+        headers: {
+          'WWW-Authenticate': 'Basic realm="Admin Area"',
+        },
+      })
+    }
+  }
+
+  // ==========================================
+  // 2. HTTPS REDIRECT (Production Only)
+  // ==========================================
   const isProduction = process.env.NODE_ENV === 'production'
   
   // HTTPS Redirect (only in production)
