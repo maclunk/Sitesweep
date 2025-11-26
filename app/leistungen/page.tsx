@@ -295,7 +295,7 @@ export default function LeistungenPage() {
                   + 199 €
                 </div>
                 <p className="text-slate-600 flex-grow">
-                  Perfekt, damit Sie lokal gefunden werden (z.B. "Anwalt Köln", "Autohaus Müller" oder "Zahnarzt Aachen").
+                  Perfekt, damit Sie lokal gefunden werden (z. B. "Anwalt Köln", "Autohaus Müller" oder "Zahnarzt Aachen").
                 </p>
               </motion.div>
 
@@ -339,7 +339,7 @@ export default function LeistungenPage() {
                   + 399 €
                 </div>
                 <p className="text-slate-600 flex-grow">
-                  Ein modernes Schnell-Bewerbungs-Formular ("Bewerben in 60 Sek"). Gegen Fachkräftemangel.
+                  Ein modernes Schnell-Bewerbungs-Formular ("Bewerben in 60 Sek."). Gegen Fachkräftemangel.
                 </p>
               </motion.div>
             </div>
@@ -351,7 +351,7 @@ export default function LeistungenPage() {
               transition={{ duration: 0.6 }}
               className="text-sm text-slate-500 text-center max-w-2xl mx-auto"
             >
-              Sie haben einen speziellen Wunsch? (z. B. Logo-Design, Texte oder Online-Termine)? Sprechen Sie uns im Gespräch einfach darauf an.
+              Sie haben einen speziellen Wunsch (z. B. Logo-Design, Texte oder Online-Termine)? Sprechen Sie uns im Gespräch einfach darauf an.
             </motion.p>
           </div>
         </section>

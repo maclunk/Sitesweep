@@ -103,7 +103,7 @@ Ist Ihr Impressum noch auf dem Stand von 2015? Gehen Sie kein Risiko ein. Unser 
   {
     id: '3',
     slug: 'cookie-banner-pflicht',
-    title: 'Cookie-Banner Pflicht: Warum "OK" nicht reicht',
+    title: 'Cookie-Banner Pflicht: Warum ein einfaches \'OK\' nicht reicht',
     metaDescription: 'Braucht meine Firmenwebsite wirklich ein Cookie-Banner? Ja – und ein einfaches "OK" reicht nicht mehr. Lesen Sie hier, warum die meisten Banner rechtlich wertlos sind.',
     publishDate: '2025-01-12',
     imageSrc: '/images/blog/blog-cookie-banner.jpg',
@@ -193,7 +193,7 @@ Lädt Ihre Website Schriften aus den USA? Für Laien ist das im Quellcode schwer
   {
     id: '5',
     slug: 'ladezeit-optimieren-kunden-gewinnen',
-    title: 'Ladezeit-Killer: Warum Kunden sofort verlassen',
+    title: 'Ladezeit-Killer: Warum Kunden Ihre Seite sofort verlassen',
     metaDescription: 'Dauert das Laden Ihrer Website länger als 3 Sekunden? Dann verlieren Sie fast die Hälfte Ihrer Besucher. Erfahren Sie hier, warum Speed heute der wichtigste Verkaufsfaktor ist.',
     publishDate: '2025-01-14',
     imageSrc: '/images/blog/blog-ladezeit-speed.jpg',
@@ -231,7 +231,7 @@ Wissen Sie, wie schnell Ihre Seite auf einem Handy lädt? Verlassen Sie sich nic
   {
     id: '6',
     slug: 'mobile-optimierung-handy-freundlich',
-    title: 'Mobile First: Website muss auf Smartphone perfekt sein',
+    title: 'Mobile First: Ihre Website muss auf dem Smartphone perfekt sein',
     metaDescription: 'Sieht Ihre Website auf dem Handy komisch aus? Das kostet Sie über 60% der Kunden. Lesen Sie hier, warum "Mobile Friendly" heute Pflicht ist und kein Luxus mehr.',
     publishDate: '2025-01-15',
     imageSrc: '/images/blog/blog-mobile-responsive.jpg',
@@ -273,7 +273,7 @@ Wissen Sie, wie Google Ihre mobile Seite bewertet? Unser Scanner prüft nicht nu
   {
     id: '7',
     slug: 'google-maps-local-seo-ranking',
-    title: 'Google Maps & SEO: Warum Sie lokal nicht gefunden',
+    title: 'Google Maps & SEO: Warum Sie lokal nicht gefunden werden',
     metaDescription: 'Warum steht Ihr Konkurrent bei Google Maps auf Platz 1? Oft liegt es an der Website. Erfahren Sie hier, wie "Local SEO" funktioniert und wie Sie regional sichtbar werden.',
     publishDate: '2025-01-16',
     imageSrc: '/images/blog/blog-local-seo-maps.jpg',
@@ -315,7 +315,7 @@ Liefert Ihre Website die richtigen Signale an Google? Unser Scanner prüft die t
   {
     id: '8',
     slug: 'baukasten-vs-profi-website',
-    title: 'Website-Baukasten vs. Profi: Wann Selbermachen rächt',
+    title: 'Website-Baukasten vs. Profi: Wann Selbermachen sich rächt',
     metaDescription: '"Das kann ich doch selbst!" – Ein Gedanke, der viele Unternehmer später teuer zu stehen kommt. Wir vergleichen Website-Baukästen mit professionellen Lösungen.',
     publishDate: '2025-01-17',
     imageSrc: '/images/blog/blog-baukasten-vs-profi.jpg',

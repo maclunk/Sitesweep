@@ -6,8 +6,6 @@ import ScanProgress from '@/components/ScanProgress'
 import IssueCard from '@/components/IssueCard'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import { BeforeAfterSlider } from '@/components/BeforeAfterSlider'
-import { SliderClientBrief } from '@/components/SliderClientBrief'
 import { getCalendlyLink } from '@/lib/calendly'
 import { BenchmarkComparison } from '@/components/BenchmarkComparison'
 import StickyCta from '@/components/StickyCta'
@@ -519,7 +517,7 @@ export default function Home() {
                       </div>
                       <div>
                         <p className="text-base font-medium text-slate-900 mb-1">Robots.txt und Sitemap</p>
-                        <p className="text-sm text-slate-600">Richtige Einstellungen sorgen dafür, dass Google alle wichtigen Seiten findet</p>
+                        <p className="text-sm text-slate-600">Richtige Einstellungen sorgen dafür, dass Google alle wichtigen Seiten findet.</p>
                       </div>
                     </div>
                   </div>
@@ -550,7 +548,7 @@ export default function Home() {
                       </div>
                       <div>
                         <p className="text-base font-medium text-slate-900 mb-1">SSL-Verschlüsselung</p>
-                        <p className="text-sm text-slate-600">Sichere Verbindungen schaffen Vertrauen. Ohne sie warnen Browser Besucher, was viele abschreckt</p>
+                        <p className="text-sm text-slate-600">Sichere Verbindungen schaffen Vertrauen. Ohne sie warnen Browser Besucher, was viele abschreckt.</p>
                       </div>
                       <div>
                         <p className="text-base font-medium text-slate-900 mb-1">Fehlerhafte Bilder und Ressourcen</p>
@@ -598,35 +596,6 @@ export default function Home() {
                       </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </section>
-
-            {/* 3. Before/After Proof Section */}
-            <section className="py-20 bg-bg-soft">
-              <div className="max-w-6xl mx-auto px-4">
-                <div className="text-center mb-10">
-                  <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">
-                    Vorher–Nachher: So steigern Sie Ihre Anfragen
-                  </h2>
-                  <p className="text-base text-slate-700 max-w-prose mx-auto leading-relaxed mb-2">
-                    Optimierte Startseiten, bessere Buttons und klare Wege zum Kontakt führen zu messbar mehr Anfragen und Aufträgen.
-                  </p>
-                  <p className="text-sm text-slate-600 font-medium">
-                    Beispiel aus der Branche: Handwerk
-                  </p>
-                </div>
-
-                <div className="mt-8">
-                  <BeforeAfterSlider
-                    beforeSrc="/images/before-after/vorher.png"
-                    afterSrc="/images/before-after/nachher.png"
-                    beforeLabel="Vorher"
-                    afterLabel="Nachher"
-                    height={650}
-                    industry="Handwerk"
-                  />
-                  <SliderClientBrief />
                 </div>
               </div>
             </section>

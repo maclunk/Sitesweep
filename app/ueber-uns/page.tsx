@@ -86,7 +86,7 @@ export default function UeberUnsPage() {
               </h2>
               <div className="prose prose-lg prose-slate max-w-none text-slate-700 leading-relaxed">
                 <p>
-                  Wir sind Marcus und Luis, zwei Mathematik-Studenten der RWTH Aachen. Als "Digital Natives" sind wir mit dem Code aufgewachsen, den das moderne Internet antreibt. Wir verbinden analytisches Denken mit praktischer Umsetzung. Während klassische Agenturen oft noch alte Systeme verkaufen, setzen wir auf moderne Standards (wie Next.js und React), die schneller, sicherer und langlebiger sind.
+                  Wir sind Marcus und Luis, zwei Mathematikstudenten der RWTH Aachen. Als "Digital Natives" sind wir mit dem Code aufgewachsen, den das moderne Internet antreibt. Wir verbinden analytisches Denken mit praktischer Umsetzung. Während klassische Agenturen oft noch alte Systeme verkaufen, setzen wir auf moderne Standards (wie Next.js und React), die schneller, sicherer und langlebiger sind.
                 </p>
               </div>
             </motion.div>
