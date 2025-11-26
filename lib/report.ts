@@ -1,7 +1,11 @@
 import { CheckResult } from './checks'
-import { CrawlResult } from './crawler'
 import { SCANNER_ALWAYS_MAX_SCORE_DOMAINS } from './config'
 import { selectLowHangingFruit, LowHangingFruitResult } from './low-hanging-fruit'
+
+// Minimal CrawlResult type for compatibility (crawler.ts removed)
+interface CrawlResult {
+  pages?: Array<{ url: string }>
+}
 
 export interface Report {
   id: string
@@ -319,7 +323,7 @@ function isWhitelistedDomain(url: string): boolean {
   }
 }
 
-export function buildReport(crawl: CrawlResult, issues: CheckResult[]): ReportResult {
+export function buildReport(crawl: CrawlResult | null | undefined, issues: CheckResult[]): ReportResult {
   // Validate inputs
   if (!crawl || !issues) {
     return {
@@ -344,7 +348,7 @@ export function buildReport(crawl: CrawlResult, issues: CheckResult[]): ReportRe
   const breakdown = calculateScoreWithBreakdown(validIssues)
   
   // Wende Normalisierung und Whitelist-Override an
-  const firstPageUrl = crawl?.pages?.[0]?.url || ''
+  const firstPageUrl = (crawl?.pages && Array.isArray(crawl.pages) && crawl.pages.length > 0) ? crawl.pages[0]?.url || '' : ''
   const normalized = normalizeAndApplyWhitelist(breakdown, firstPageUrl)
   
   // Aktualisiere Breakdown mit final Score

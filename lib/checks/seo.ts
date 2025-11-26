@@ -2,7 +2,7 @@
  * SEO Checks - Suchmaschinenoptimierung
  */
 
-import { CrawlResult } from '../crawler'
+import { CrawlResult } from '../checks'
 
 export interface CheckResult {
   id: string
@@ -22,6 +22,8 @@ export interface CheckResult {
  */
 export function checkMissingTitle(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutTitle = crawlResult.pages.filter(p => !p.title || p.title.trim().length === 0)
   
   if (pagesWithoutTitle.length > 0) {
@@ -39,6 +41,8 @@ export function checkMissingTitle(crawlResult: CrawlResult): CheckResult[] {
   }
   
   // Prüfe auch auf Title-Tags außerhalb 20-60 Zeichen
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithBadTitleLength = crawlResult.pages.filter(p => {
     if (!p.title) return false
     const length = p.title.trim().length
@@ -68,6 +72,8 @@ export function checkMissingTitle(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkMissingMetaDescription(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutMeta = crawlResult.pages.filter(p => !p.metaDescription || p.metaDescription.trim().length === 0)
   
   if (pagesWithoutMeta.length > 0) {
@@ -85,6 +91,8 @@ export function checkMissingMetaDescription(crawlResult: CrawlResult): CheckResu
   }
   
   // Prüfe auch auf Meta-Descriptions außerhalb 60-160 Zeichen
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithBadMetaLength = crawlResult.pages.filter(p => {
     if (!p.metaDescription) return false
     const length = p.metaDescription.trim().length
@@ -114,6 +122,8 @@ export function checkMissingMetaDescription(crawlResult: CrawlResult): CheckResu
  */
 export function checkMultipleH1(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithMultipleH1 = crawlResult.pages.filter(p => (p.h1Count || 0) > 1)
   
   if (pagesWithMultipleH1.length > 0) {
@@ -138,6 +148,8 @@ export function checkMultipleH1(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkMissingH1(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutH1 = crawlResult.pages.filter(p => (p.h1Count || 0) === 0)
   
   if (pagesWithoutH1.length > 0) {
@@ -216,6 +228,7 @@ export async function checkSitemapXml(crawlResult: CrawlResult): Promise<CheckRe
  * Prüft auf fehlende Alt-Tags bei Bildern (SEO)
  */
 export function checkMissingAltTags(crawlResult: CrawlResult): CheckResult[] {
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   // Diese Prüfung benötigt HTML-Analyse
   // Wird in der bestehenden checks.ts implementiert
   return []
@@ -225,6 +238,7 @@ export function checkMissingAltTags(crawlResult: CrawlResult): CheckResult[] {
  * Prüft auf Duplicate Titles über Pages
  */
 export function checkDuplicateTitles(crawlResult: CrawlResult): CheckResult[] {
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   const results: CheckResult[] = []
   
   // Gruppiere Seiten nach Title
@@ -270,6 +284,7 @@ export function checkDuplicateTitles(crawlResult: CrawlResult): CheckResult[] {
  * Prüft auf zu wenig Text auf wichtigen Seiten
  */
 export function checkLowWordCount(crawlResult: CrawlResult): CheckResult[] {
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   const results: CheckResult[] = []
   const pagesWithLowWordCount: string[] = []
   

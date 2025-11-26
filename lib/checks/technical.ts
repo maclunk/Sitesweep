@@ -2,7 +2,7 @@
  * Technical Checks - Technische Prüfungen
  */
 
-import { CrawlResult } from '../crawler'
+import { CrawlResult } from '../checks'
 
 export interface CheckResult {
   id: string
@@ -22,6 +22,8 @@ export interface CheckResult {
  */
 export function check404Pages(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pages404 = crawlResult.pages.filter(p => p.status === 404)
   
   if (pages404.length > 0) {
@@ -46,6 +48,8 @@ export function check404Pages(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkSSL(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutSSL = crawlResult.pages.filter(p => {
     try {
       const url = new URL(p.url)
@@ -77,6 +81,8 @@ export function checkSSL(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkLoadTime(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const largePages = crawlResult.pages.filter(p => {
     const htmlSize = p.html ? Buffer.byteLength(p.html, 'utf8') : 0
     return htmlSize > 500 * 1024 // > 500 KB
@@ -104,11 +110,14 @@ export function checkLoadTime(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkLargeImages(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const largeImages: { url: string; image: { src: string; size: number } }[] = []
   
-  crawlResult.pages.forEach(page => {
-    page.images?.forEach(img => {
-      if (img.size > 500 * 1024) { // > 500 KB
+  crawlResult.pages.forEach((page: any) => {
+    if (!page?.url) return
+    page.images?.forEach((img: any) => {
+      if (img?.size > 500 * 1024) { // > 500 KB
         largeImages.push({ url: page.url, image: img })
       }
     })
@@ -144,6 +153,8 @@ export function checkMissingAltTags(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkMissingResponsiveMeta(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutViewport = crawlResult.pages.filter(p => {
     return !p.meta?.viewport && !p.meta?.['og:image'] // Einfache Prüfung
   })
@@ -170,6 +181,8 @@ export function checkMissingResponsiveMeta(crawlResult: CrawlResult): CheckResul
  */
 export function checkConsoleErrors(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithErrors = crawlResult.pages.filter(p => p.errors && p.errors.length > 0)
   
   if (pagesWithErrors.length > 0) {
@@ -195,6 +208,8 @@ export function checkConsoleErrors(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkLargeHtmlSize(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const largeHtmlPages = crawlResult.pages.filter(p => {
     if (!p.html) return false
     const size = Buffer.byteLength(p.html, 'utf8')
@@ -223,6 +238,8 @@ export function checkLargeHtmlSize(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkExcessiveScripts(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithManyScripts = crawlResult.pages.filter(p => (p.scriptCount || 0) > 15)
   
   if (pagesWithManyScripts.length > 0) {
@@ -247,6 +264,8 @@ export function checkExcessiveScripts(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkRedirectChains(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithLongChains = crawlResult.pages.filter(p => {
     const chainLength = p.redirectChain?.length || 0
     return chainLength > 2
@@ -274,6 +293,8 @@ export function checkRedirectChains(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkMissingCanonical(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutCanonical: string[] = []
   
   // Gruppiere Seiten nach normalisiertem Pfad (ohne Query-Parameter)
@@ -335,6 +356,8 @@ export function checkMissingCanonical(crawlResult: CrawlResult): CheckResult[] {
  */
 export function checkImagesWithoutOptimization(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithUnoptimizedImages: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -342,7 +365,7 @@ export function checkImagesWithoutOptimization(crawlResult: CrawlResult): CheckR
     if (!html) continue
     
     // Suche nach großen Bildern (> 100 KB geschätzt oder > 500px Breite)
-    const largeImages = page.images?.filter(img => img.size > 100 * 1024) || []
+    const largeImages = page.images?.filter((img: any) => img?.size > 100 * 1024) || []
     
     if (largeImages.length === 0) continue
     
@@ -396,6 +419,8 @@ export function checkImagesWithoutOptimization(crawlResult: CrawlResult): CheckR
  */
 export function checkHttpVersion(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutHttp2: string[] = []
   
   // Hinweis: Diese Prüfung ist vereinfacht, da wir die HTTP-Version aus dem Response nicht direkt haben
@@ -430,6 +455,7 @@ export function checkHttpVersion(crawlResult: CrawlResult): CheckResult[] {
  */
 export function runTechnicalChecks(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   results.push(...check404Pages(crawlResult))
   results.push(...checkSSL(crawlResult))

@@ -2,7 +2,7 @@
  * Legal Checks - Rechtliche Prüfungen
  */
 
-import { CrawlResult } from '../crawler'
+import { CrawlResult } from '../checks'
 import { normalizeUrl } from '../utils/url'
 
 export interface CheckResult {
@@ -238,6 +238,8 @@ export function checkCookieBanner(crawlResult: CrawlResult): CheckResult[] {
     'dsgvo',
   ]
   
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   for (const page of crawlResult.pages) {
     const html = (page.html || '').toLowerCase()
     const content = (page.content || '').toLowerCase()
@@ -324,6 +326,8 @@ export function checkExternalFonts(crawlResult: CrawlResult): CheckResult[] {
     'maxcdn.bootstrapcdn.com',
     'ajax.googleapis.com',
   ]
+  
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const html = page.html || ''

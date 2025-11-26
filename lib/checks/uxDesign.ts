@@ -5,7 +5,7 @@
  * und erzeugt Issues + Category-Score (raw 0-100)
  */
 
-import { CrawlResult } from '../crawler'
+import { CrawlResult } from '../checks'
 
 export interface CheckResult {
   id: string
@@ -93,7 +93,9 @@ function extractFontSizes(html: string | undefined): number[] {
  */
 function checkMissingViewport(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
-  const pagesWithoutViewport = crawlResult.pages.filter(page => {
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
+  const pagesWithoutViewport = crawlResult.pages.filter((page: any) => {
     const meta = page.meta || {}
     return !meta.viewport && !meta['viewport']
   })
@@ -120,6 +122,8 @@ function checkMissingViewport(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkMobileOverflow(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const issues: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -172,6 +176,8 @@ function checkMobileOverflow(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkSmallFontSizes(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithSmallFonts: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -210,6 +216,7 @@ function checkSmallFontSizes(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkLongTextLines(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const html = page.html || ''
@@ -262,6 +269,7 @@ function checkLongTextLines(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkMissingHierarchy(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const h1Count = page.h1Count || page.h1?.length || 0
@@ -306,6 +314,7 @@ function checkMissingHierarchy(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkOverloadedNavigation(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const html = page.html || ''
@@ -343,6 +352,8 @@ function checkOverloadedNavigation(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkLowContrast(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithLowContrast: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -404,6 +415,7 @@ function checkLowContrast(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkInconsistentButtons(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const html = page.html || ''
@@ -456,6 +468,7 @@ function checkInconsistentButtons(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkOutdatedUIPatterns(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const html = page.html || ''
@@ -509,6 +522,8 @@ function checkOutdatedUIPatterns(crawlResult: CrawlResult): CheckResult[] {
 function checkSecurityIssues(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
   const pagesWithoutHTTPS: string[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithMixedContent: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -526,7 +541,7 @@ function checkSecurityIssues(crawlResult: CrawlResult): CheckResult[] {
       // Mixed Content (HTTPS-Seite mit HTTP-Ressourcen)
       if (urlObj.protocol === 'https:' && page.html) {
         const httpResources = page.html.match(/https?:\/\/([^"'\s<>]+)/gi) || []
-        const hasMixedContent = httpResources.some(resource => resource.startsWith('http://'))
+        const hasMixedContent = httpResources.some((resource: string) => resource.startsWith('http://'))
         
         if (hasMixedContent) {
           pagesWithMixedContent.push(url)
@@ -573,6 +588,7 @@ function checkSecurityIssues(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkMissingCTA(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   for (const page of crawlResult.pages) {
     const html = page.html || ''
@@ -614,6 +630,8 @@ function checkMissingCTA(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkMissingSocialProof(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutProof: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -657,6 +675,7 @@ function checkMissingSocialProof(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkSPAPerformance(crawlResult: CrawlResult, siteMeta: SiteMeta): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
   
   // Berechne Durchschnitte
   const avgWordCount = siteMeta.avgWordCount || 0
@@ -664,7 +683,7 @@ function checkSPAPerformance(crawlResult: CrawlResult, siteMeta: SiteMeta): Chec
   
   // SPA-Heuristik: Viel JS, wenig Text
   if (avgScriptCount > 5 && avgWordCount < 200) {
-    const spaPages = crawlResult.pages.filter(page => {
+    const spaPages = crawlResult.pages.filter((page: any) => {
       const scriptCount = page.scriptCount || 0
       const wordCount = page.wordCount || 0
       return scriptCount > 3 && wordCount < 150
@@ -693,6 +712,8 @@ function checkSPAPerformance(crawlResult: CrawlResult, siteMeta: SiteMeta): Chec
  */
 function checkPerformanceMetrics(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const slowPages: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -740,6 +761,8 @@ function checkPerformanceMetrics(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkHeroWithoutValueProposition(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithWeakHero: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -788,6 +811,8 @@ function checkHeroWithoutValueProposition(crawlResult: CrawlResult): CheckResult
  */
 function checkMissingContactInfo(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithoutContact: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -806,7 +831,7 @@ function checkMissingContactInfo(crawlResult: CrawlResult): CheckResult[] {
     
     // Prüfe auf Kontakt-Keywords im Header/Footer
     const headerFooterMatch = html.match(/(<header[^>]*>[\s\S]{0,3000}|<footer[^>]*>[\s\S]{0,3000})/gi)
-    const hasContactInHeaderFooter = headerFooterMatch?.some(section => {
+    const hasContactInHeaderFooter = headerFooterMatch?.some((section: string) => {
       const sectionLower = section.toLowerCase()
       return sectionLower.includes('kontakt') || 
              sectionLower.includes('contact') || 
@@ -846,6 +871,8 @@ function checkMissingContactInfo(crawlResult: CrawlResult): CheckResult[] {
  */
 function checkFormsWithoutLabels(crawlResult: CrawlResult): CheckResult[] {
   const results: CheckResult[] = []
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) return []
+  
   const pagesWithUnlabeledForms: string[] = []
   
   for (const page of crawlResult.pages) {
@@ -929,10 +956,14 @@ export function runUxDesignChecks(
   const issues: CheckResult[] = []
   
   // Berechne Site-Meta falls nicht übergeben
+  if (!crawlResult?.pages || !Array.isArray(crawlResult.pages)) {
+    return { issues: [], categoryScoreRaw: 0 }
+  }
+  
   const meta: SiteMeta = siteMeta || {
     totalPages: crawlResult.pages.length,
-    avgWordCount: crawlResult.pages.reduce((sum, p) => sum + (p.wordCount || 0), 0) / crawlResult.pages.length || 0,
-    avgScriptCount: crawlResult.pages.reduce((sum, p) => sum + (p.scriptCount || 0), 0) / crawlResult.pages.length || 0,
+    avgWordCount: crawlResult.pages.reduce((sum: number, p: any) => sum + (p.wordCount || 0), 0) / crawlResult.pages.length || 0,
+    avgScriptCount: crawlResult.pages.reduce((sum: number, p: any) => sum + (p.scriptCount || 0), 0) / crawlResult.pages.length || 0,
   }
   
   // A) Layout & Responsiveness

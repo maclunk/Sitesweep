@@ -2,7 +2,7 @@
  * Verbesserter Broken-Link-Check mit reduzierten False Positives
  */
 
-import { CrawlResult } from '../crawler'
+import { CrawlResult } from '../checks'
 import { normalizeUrl, normalizeForComparison } from '../utils/url'
 
 export interface CheckResult {
@@ -150,7 +150,7 @@ export async function checkBrokenInternalLinks(crawlResult: CrawlResult): Promis
     crawlResult.pages.forEach(page => {
       if (!page?.url || !page.links) return
       
-      page.links.forEach(link => {
+      page.links.forEach((link: any) => {
         try {
           const linkUrl = new URL(link, page.url)
           

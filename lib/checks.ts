@@ -1,8 +1,13 @@
-import { CrawlResult } from './crawler'
 import { normalizeUrl, sameDomain } from './utils'
 import { SAFE_MODE } from './config'
 import { checkBrokenInternalLinks } from './checks/brokenLinks'
 import { runUxDesignChecks } from './checks/uxDesign'
+
+// Minimal CrawlResult type (crawler.ts removed for Vercel compatibility)
+export interface CrawlResult {
+  pages?: Array<{ url: string; [key: string]: any }>
+  [key: string]: any
+}
 
 export interface CheckResult {
   id: string
@@ -102,6 +107,11 @@ export async function runChecks(crawlResult: CrawlResult): Promise<CheckResult[]
       
       // UX/Design Modernitäts-Check (neue umfassende Kategorie)
       try {
+        if (!crawlResult.pages || !Array.isArray(crawlResult.pages) || crawlResult.pages.length === 0) {
+          // Skip UX checks if no pages available
+          return []
+        }
+        
         const siteMeta = {
           totalPages: crawlResult.pages.length,
           avgWordCount: crawlResult.pages.reduce((sum, p) => sum + (p.wordCount || 0), 0) / crawlResult.pages.length || 0,
