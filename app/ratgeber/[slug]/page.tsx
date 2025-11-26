@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import { blogArticles } from '@/src/data/blogArticles'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
-import ScannerCta from '@/components/ScannerCta'
 import Image from 'next/image'
 import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
@@ -120,11 +119,6 @@ export default function BlogArticlePage({ params }: PageProps) {
             {article.content}
           </ReactMarkdown>
         </article>
-
-        {/* Scanner CTA */}
-        <div className="mt-10">
-          <ScannerCta />
-        </div>
       </main>
 
       <Footer />
