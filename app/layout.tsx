@@ -8,10 +8,10 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
 export const metadata: Metadata = {
   title: {
-    default: 'SiteSweep - Website-Sicherheit für KMU',
-    template: '%s | SiteSweep - Website-Sicherheit für KMU',
+    default: 'Kostenloser Website-Sicherheitscheck für KMU | SiteSweep',
+    template: '%s | SiteSweep',
   },
-  description: 'Der kostenlose Website-Sicherheitscheck für Kanzleien, Praxen und Handwerk. Prüfen Sie jetzt Ihre Seite auf Abmahnrisiken und SSL-Fehler.',
+  description: 'Prüfen Sie Ihre Website auf Sicherheitslücken und Abmahnrisiken. Die kostenlose Website-Inspektion für Kanzleien, Praxen und Handwerk.',
   alternates: {
     canonical: siteUrl,
   },
