@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next'
 import { blogArticles } from '@/src/data/blogArticles'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  // Basis-URL (für Production aus ENV-Variable, für Development localhost)
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+  // Production Base URL
+  const baseUrl = 'https://www.sitesweep.de'
 
   // Statische Routen
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -30,6 +30,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/impressum`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/datenschutz`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
   ]
 

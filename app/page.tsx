@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import ScanProgress from '@/components/ScanProgress'
-import IssueCard from '@/components/IssueCard'
+import AuditReport from '@/components/AuditReport'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { getCalendlyLink } from '@/lib/calendly'
@@ -11,13 +11,24 @@ import { BenchmarkComparison } from '@/components/BenchmarkComparison'
 import StickyCta from '@/components/StickyCta'
 import { Search, ArrowRight, Gauge, ShieldCheck, Layout } from 'lucide-react'
 
+interface Issue {
+  id: string
+  title: string
+  description: string
+  severity: 'high' | 'medium' | 'low'
+  category?: 'security' | 'legal' | 'gdpr' | 'seo' | 'technical' | 'ux'
+  pages?: string[]
+}
+
 interface ScanResult {
   status: string
   score?: number
   summary?: string
-  issues?: any[]
+  issues?: Issue[]
   error?: string
   mobileScreenshotUrl?: string | null
+  screenshot?: string | null
+  techStack?: string[]
   industry?: string | null
   city?: string | null
   competitorName?: string | null
@@ -247,6 +258,8 @@ export default function Home() {
           summary: resultData.summary || '',
           issues: Array.isArray(resultData.issues) ? resultData.issues : [],
           mobileScreenshotUrl: resultData.mobileScreenshotUrl || null,
+          screenshot: resultData.screenshot || resultData.mobileScreenshotUrl || null,
+          techStack: Array.isArray(resultData.techStack) ? resultData.techStack : [],
           industry: resultData.industry || null,
           city: resultData.city || null,
           competitorName: resultData.competitorName || null,
@@ -270,42 +283,6 @@ export default function Home() {
     }
   }
 
-  // Gruppiere Issues nach Severity
-  const groupIssuesBySeverity = (issues: any[]) => {
-    const grouped = {
-      high: [] as any[],
-      medium: [] as any[],
-      low: [] as any[],
-    }
-
-    issues.forEach((issue) => {
-      if (issue.severity === 'high') {
-        grouped.high.push(issue)
-      } else if (issue.severity === 'medium') {
-        grouped.medium.push(issue)
-      } else {
-        grouped.low.push(issue)
-      }
-    })
-
-    return grouped
-  }
-
-  // Score-Status bestimmen
-  const getScoreStatus = (score: number) => {
-    if (score < 70) return { label: 'Kritisch', color: '#dc2626' }
-    if (score < 90) return { label: 'Mittel', color: '#f59e0b' }
-    return { label: 'Gut', color: '#10b981' }
-  }
-
-  // Score-Farbe bestimmen
-  const getScoreColor = (score: number) => {
-    if (score < 70) return '#dc2626'
-    if (score < 90) return '#f59e0b'
-    return '#10b981'
-  }
-
-
   return (
     <div className="min-h-screen bg-bg-soft">
       <Header />
@@ -320,137 +297,28 @@ export default function Home() {
 
         {/* Ergebnis-Seite - wenn Scan fertig */}
         {result && result.status === 'done' && (
-          <div className="max-w-5xl mx-auto px-4 py-10">
-            <div className="bg-white rounded-2xl shadow-soft border border-slate-200/50 p-6 md:p-8 mb-6">
-              {/* Score Badge */}
-              <div className="text-center mb-6">
-                <div 
-                  className="inline-flex items-center justify-center w-32 h-32 rounded-full text-white text-4xl font-bold mb-4 shadow-soft-lg"
-                  style={{ 
-                    backgroundColor: getScoreColor(result.score || 0),
-                  }}
-                >
-                  <span>{result.score}</span>
-                  <span className="text-2xl">/100</span>
-                </div>
-                <div className="text-lg mb-2">
-                  Status: <strong style={{ color: getScoreColor(result.score || 0) }}>
-                    {getScoreStatus(result.score || 0).label}
-                  </strong>
-                </div>
-                {result.summary && (
-                  <p className="text-slate-600 max-w-prose mx-auto leading-relaxed">{result.summary}</p>
-                )}
-              </div>
-            </div>
+          <div className="max-w-6xl mx-auto px-4 py-10">
+            {/* New Professional Audit Report */}
+            <AuditReport 
+              score={result.score || 0}
+              summary={result.summary}
+              screenshot={result.screenshot || result.mobileScreenshotUrl}
+              techStack={result.techStack}
+              issues={result.issues || []}
+              url={result.url || url}
+            />
 
-            {/* Benchmark Comparison */}
+            {/* Benchmark Comparison - Optional */}
             {result.industry && result.city && (
-              <BenchmarkComparison
-                industry={result.industry}
-                city={result.city}
-                yourScore={result.score || 0}
-                competitorName={result.competitorName || null}
-              />
-            )}
-
-            {/* Issues gruppiert nach Severity */}
-            {result.issues && result.issues.length > 0 ? (
-              <div className="space-y-6 mb-8">
-                {(() => {
-                  const grouped = groupIssuesBySeverity(result.issues)
-                  return (
-                    <>
-                      {grouped.high.length > 0 && (
-                        <div className="bg-white rounded-2xl shadow-soft border border-red-200/50 p-6">
-                          <h2 className="text-xl font-semibold text-red-700 mb-4">
-                            Kritisch ({grouped.high.length})
-                          </h2>
-                          <div className="space-y-3">
-                            {grouped.high.map((issue: any, index: number) => (
-                              <IssueCard
-                                key={issue.id || `high-${index}`}
-                                id={issue.id}
-                                title={issue.title}
-                                description={issue.description}
-                                severity={issue.severity}
-                                pages={issue.pages || []}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {grouped.medium.length > 0 && (
-                        <div className="bg-white rounded-2xl shadow-soft border border-yellow-200/50 p-6">
-                          <h2 className="text-xl font-semibold text-yellow-700 mb-4">
-                            Mittel ({grouped.medium.length})
-                          </h2>
-                          <div className="space-y-3">
-                            {grouped.medium.map((issue: any, index: number) => (
-                              <IssueCard
-                                key={issue.id || `medium-${index}`}
-                                id={issue.id}
-                                title={issue.title}
-                                description={issue.description}
-                                severity={issue.severity}
-                                pages={issue.pages || []}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {grouped.low.length > 0 && (
-                        <div className="bg-white rounded-2xl shadow-soft border border-slate-200/50 p-6">
-                          <h2 className="text-xl font-semibold text-slate-700 mb-4">
-                            Gering ({grouped.low.length})
-                          </h2>
-                          <div className="space-y-3">
-                            {grouped.low.map((issue: any, index: number) => (
-                              <IssueCard
-                                key={issue.id || `low-${index}`}
-                                id={issue.id}
-                                title={issue.title}
-                                description={issue.description}
-                                severity={issue.severity}
-                                pages={issue.pages || []}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  )
-                })()}
-              </div>
-            ) : (
-              <div className="bg-white rounded-2xl shadow-soft border border-slate-200/50 p-6 md:p-8 text-center mb-8">
-                <p className="text-2xl font-semibold mb-2">Keine kritischen Probleme festgestellt</p>
-                  <p className="text-slate-600 max-w-prose mx-auto leading-relaxed">
-                    Ihre Website erfüllt die geprüften Standards. Regelmäßige Überprüfungen werden empfohlen.
-                  </p>
+              <div className="mt-8">
+                <BenchmarkComparison
+                  industry={result.industry}
+                  city={result.city}
+                  yourScore={result.score || 0}
+                  competitorName={result.competitorName || null}
+                />
               </div>
             )}
-
-            {/* CTA: Analyse buchen */}
-            <div className="bg-gradient-cta rounded-2xl shadow-soft-lg border border-white/50 p-6 md:p-8 text-center">
-              <h2 className="text-2xl md:text-3xl font-bold mb-4 text-slate-900">
-                Mehr Kunden gewinnen?
-              </h2>
-              <p className="text-slate-700 mb-6 max-w-prose mx-auto leading-relaxed font-medium">
-                Buchen Sie eine kostenlose Analyse und besprechen Sie mit unseren Experten, welche Maßnahmen zu mehr Anfragen und Aufträgen führen.
-              </p>
-              <a
-                href={getCalendlyLink(url)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-8 py-4 bg-[#0F766E] text-white font-semibold rounded-full hover:bg-[#0D5D56] transition-all shadow-soft-lg hover:shadow-soft min-h-[48px]"
-              >
-                Kostenlose Analyse buchen
-                <ArrowRight className="w-5 h-5" />
-              </a>
-            </div>
           </div>
         )}
 
