@@ -3,7 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LayoutDashboard, Search, Wheat, Users, LogOut } from 'lucide-react'
-import { cn } from '@/lib/utils'
+
+// Helper function to combine class names
+function cn(...classes: (string | undefined | null | false)[]): string {
+  return classes.filter(Boolean).join(' ')
+}
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },

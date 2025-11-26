@@ -101,3 +101,11 @@ export function sameDomain(link: string, base: string): boolean {
   }
 }
 
+/**
+ * Combines CSS class names (simple version without external dependencies)
+ * Filters out falsy values and joins classes with space
+ */
+export function cn(...classes: (string | undefined | null | false | 0)[]): string {
+  return classes.filter(Boolean).join(' ')
+}
+
