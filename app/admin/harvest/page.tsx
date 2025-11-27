@@ -32,6 +32,7 @@ export default function HarvestPage() {
   const [error, setError] = useState<string | null>(null)
   const [selectedPageIndex, setSelectedPageIndex] = useState(0)
   const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({})
+  const [downloadProgress, setDownloadProgress] = useState<{ current: number; total: number } | null>(null)
 
   const handleCopy = (text: string, key: string) => {
     navigator.clipboard.writeText(text)
@@ -82,114 +83,201 @@ export default function HarvestPage() {
   const downloadZip = async () => {
     if (!result) return
 
-    const zip = new JSZip()
-
-    // Extract domain name from URL for filename
-    let domainName = 'website'
     try {
-      if (url) {
-        const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`)
-        domainName = urlObj.hostname.replace(/^www\./, '').replace(/\./g, '-')
+      const zip = new JSZip()
+
+      // Extract domain name from URL for filename
+      let domainName = 'website'
+      try {
+        if (url) {
+          const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`)
+          domainName = urlObj.hostname.replace(/^www\./, '').replace(/\./g, '-')
+        }
+      } catch (e) {
+        // Use default if URL parsing fails
       }
-    } catch (e) {
-      // Use default if URL parsing fails
-    }
 
-    // File 1: projekt_info.json - Full raw JSON
-    zip.file('projekt_info.json', JSON.stringify(result, null, 2))
+      // File 1: projekt_info.json - Full raw JSON
+      zip.file('projekt_info.json', JSON.stringify(result, null, 2))
 
-    // File 2: kontakt_info.txt - Contact information
-    let kontaktInfo = '=== KONTAKTINFORMATIONEN ===\n\n'
-    
-    if (result.global?.emails && result.global.emails.length > 0) {
-      kontaktInfo += '📧 E-MAILS:\n'
-      result.global.emails.forEach(email => {
-        kontaktInfo += `  - ${email}\n`
-      })
-      kontaktInfo += '\n'
-    }
+      // File 2: kontakt_info.txt - Contact information
+      let kontaktInfo = '=== KONTAKTINFORMATIONEN ===\n\n'
+      
+      if (result.global?.emails && result.global.emails.length > 0) {
+        kontaktInfo += '📧 E-MAILS:\n'
+        result.global.emails.forEach(email => {
+          kontaktInfo += `  - ${email}\n`
+        })
+        kontaktInfo += '\n'
+      }
 
-    if (result.global?.phones && result.global.phones.length > 0) {
-      kontaktInfo += '📞 TELEFONNUMMERN:\n'
-      result.global.phones.forEach(phone => {
-        kontaktInfo += `  - ${phone}\n`
-      })
-      kontaktInfo += '\n'
-    }
+      if (result.global?.phones && result.global.phones.length > 0) {
+        kontaktInfo += '📞 TELEFONNUMMERN:\n'
+        result.global.phones.forEach(phone => {
+          kontaktInfo += `  - ${phone}\n`
+        })
+        kontaktInfo += '\n'
+      }
 
-    if (result.global?.socials && result.global.socials.length > 0) {
-      kontaktInfo += '🌐 SOCIAL MEDIA:\n'
-      result.global.socials.forEach(social => {
-        kontaktInfo += `  - ${social}\n`
-      })
-      kontaktInfo += '\n'
-    }
+      if (result.global?.socials && result.global.socials.length > 0) {
+        kontaktInfo += '🌐 SOCIAL MEDIA:\n'
+        result.global.socials.forEach(social => {
+          kontaktInfo += `  - ${social}\n`
+        })
+        kontaktInfo += '\n'
+      }
 
-    if (!result.global?.emails?.length && !result.global?.phones?.length && !result.global?.socials?.length) {
-      kontaktInfo += 'Keine Kontaktinformationen gefunden.\n'
-    }
+      if (!result.global?.emails?.length && !result.global?.phones?.length && !result.global?.socials?.length) {
+        kontaktInfo += 'Keine Kontaktinformationen gefunden.\n'
+      }
 
-    zip.file('kontakt_info.txt', kontaktInfo)
+      zip.file('kontakt_info.txt', kontaktInfo)
 
-    // Folder: /seiten - Create markdown files for each page
-    const seitenFolder = zip.folder('seiten')
-    
-    if (result.pages && result.pages.length > 0 && seitenFolder) {
-      result.pages.forEach((page, index) => {
-        // Create a safe filename from the page title or URL
-        let filename = `seite-${index + 1}`
-        if (page.title) {
-          filename = page.title
-            .toLowerCase()
-            .replace(/[^a-z0-9äöüß]+/g, '-')
-            .replace(/^-+|-+$/g, '')
-            .substring(0, 50)
-        } else if (page.url) {
-          try {
-            const pathname = new URL(page.url).pathname
-            if (pathname && pathname !== '/') {
-              filename = pathname
-                .replace(/^\/|\/$/g, '')
-                .replace(/\//g, '-')
-                .replace(/[^a-z0-9-]/g, '')
-                .substring(0, 50)
-            }
-          } catch (e) {
-            // Use default filename
+      // Collect all unique images from all pages
+      const allImages = new Set<string>()
+      if (result.pages && result.pages.length > 0) {
+        result.pages.forEach(page => {
+          if (page.images && page.images.length > 0) {
+            page.images.forEach((imgItem: any) => {
+              let imgUrl = ''
+              if (typeof imgItem === 'string') {
+                imgUrl = imgItem
+              } else if (typeof imgItem === 'object' && imgItem !== null) {
+                imgUrl = imgItem.src || imgItem.url || imgItem.link || ''
+              }
+              if (imgUrl && imgUrl.startsWith('http')) {
+                allImages.add(imgUrl)
+              }
+            })
           }
-        }
+        })
+      }
 
-        // Build markdown content
-        let mdContent = `# ${page.title || 'Ohne Titel'}\n\n`
-        mdContent += `**URL:** ${page.url}\n\n`
-        mdContent += `---\n\n`
+      // Download images and store mapping
+      const imageMapping = new Map<string, string>() // URL -> local filename
+      const imagesFolder = zip.folder('images')
+      
+      if (imagesFolder && allImages.size > 0) {
+        const imageArray = Array.from(allImages)
+        setDownloadProgress({ current: 0, total: imageArray.length })
 
-        if (page.content) {
-          mdContent += `## Extrahierter Text:\n\n${page.content}\n\n`
-        }
+        for (let i = 0; i < imageArray.length; i++) {
+          const imgUrl = imageArray[i]
+          
+          try {
+            // Download image via proxy
+            const proxyUrl = `/api/proxy-image?url=${encodeURIComponent(imgUrl)}`
+            const response = await fetch(proxyUrl)
+            
+            if (response.ok) {
+              const blob = await response.blob()
+              
+              // Detect file extension
+              let extension = 'jpg'
+              const contentType = response.headers.get('content-type')
+              if (contentType) {
+                if (contentType.includes('png')) extension = 'png'
+                else if (contentType.includes('gif')) extension = 'gif'
+                else if (contentType.includes('webp')) extension = 'webp'
+                else if (contentType.includes('svg')) extension = 'svg'
+              } else {
+                // Try to get extension from URL
+                const urlExt = imgUrl.split('.').pop()?.split('?')[0]?.toLowerCase()
+                if (urlExt && ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(urlExt)) {
+                  extension = urlExt === 'jpeg' ? 'jpg' : urlExt
+                }
+              }
 
-        if (page.images && page.images.length > 0) {
-          mdContent += `## Bilder auf dieser Seite (${page.images.length}):\n\n`
-          page.images.forEach((imgItem: any) => {
-            let imgUrl = ''
-            if (typeof imgItem === 'string') {
-              imgUrl = imgItem
-            } else if (typeof imgItem === 'object' && imgItem !== null) {
-              imgUrl = imgItem.src || imgItem.url || imgItem.link || ''
+              // Create filename
+              const filename = `image_${i + 1}.${extension}`
+              imageMapping.set(imgUrl, filename)
+
+              // Add to ZIP
+              imagesFolder.file(filename, blob)
             }
-            if (imgUrl) {
-              mdContent += `- ${imgUrl}\n`
-            }
-          })
-        }
+          } catch (error) {
+            console.error(`Failed to download image ${imgUrl}:`, error)
+            // Continue with next image
+          }
 
-        seitenFolder.file(`${filename}.md`, mdContent)
-      })
+          // Update progress
+          setDownloadProgress({ current: i + 1, total: imageArray.length })
+        }
+      }
+
+      // Folder: /seiten - Create markdown files for each page
+      const seitenFolder = zip.folder('seiten')
+      
+      if (result.pages && result.pages.length > 0 && seitenFolder) {
+        result.pages.forEach((page, index) => {
+          // Create a safe filename from the page title or URL
+          let filename = `seite-${index + 1}`
+          if (page.title) {
+            filename = page.title
+              .toLowerCase()
+              .replace(/[^a-z0-9äöüß]+/g, '-')
+              .replace(/^-+|-+$/g, '')
+              .substring(0, 50)
+          } else if (page.url) {
+            try {
+              const pathname = new URL(page.url).pathname
+              if (pathname && pathname !== '/') {
+                filename = pathname
+                  .replace(/^\/|\/$/g, '')
+                  .replace(/\//g, '-')
+                  .replace(/[^a-z0-9-]/g, '')
+                  .substring(0, 50)
+              }
+            } catch (e) {
+              // Use default filename
+            }
+          }
+
+          // Build markdown content
+          let mdContent = `# ${page.title || 'Ohne Titel'}\n\n`
+          mdContent += `**URL:** ${page.url}\n\n`
+          mdContent += `---\n\n`
+
+          if (page.content) {
+            mdContent += `## Extrahierter Text:\n\n${page.content}\n\n`
+          }
+
+          if (page.images && page.images.length > 0) {
+            mdContent += `## Bilder auf dieser Seite (${page.images.length}):\n\n`
+            page.images.forEach((imgItem: any) => {
+              let imgUrl = ''
+              if (typeof imgItem === 'string') {
+                imgUrl = imgItem
+              } else if (typeof imgItem === 'object' && imgItem !== null) {
+                imgUrl = imgItem.src || imgItem.url || imgItem.link || ''
+              }
+              if (imgUrl) {
+                const localFilename = imageMapping.get(imgUrl)
+                if (localFilename) {
+                  mdContent += `- **Original:** ${imgUrl}\n`
+                  mdContent += `  **Lokal:** images/${localFilename}\n\n`
+                } else {
+                  mdContent += `- ${imgUrl} *(Download fehlgeschlagen)*\n`
+                }
+              }
+            })
+          }
+
+          seitenFolder.file(`${filename}.md`, mdContent)
+        })
+      }
+
+      // Reset progress
+      setDownloadProgress(null)
+
+      // Generate and download the ZIP
+      const blob = await zip.generateAsync({ type: 'blob' })
+      saveAs(blob, `relaunch-paket-${domainName}.zip`)
+    } catch (error) {
+      console.error('ZIP generation error:', error)
+      setDownloadProgress(null)
+      alert('Fehler beim Erstellen des ZIP-Archivs. Bitte versuchen Sie es erneut.')
     }
-
-    // Generate and download the ZIP
-    const blob = await zip.generateAsync({ type: 'blob' })
-    saveAs(blob, `relaunch-paket-${domainName}.zip`)
   }
 
   return (
@@ -259,16 +347,26 @@ export default function HarvestPage() {
                 <p className="text-sm text-slate-400 mt-1">
                   {result.pages?.length || 0} Seiten gefunden
                 </p>
-              </div>
+            </div>
             </div>
             
             {/* Download Button */}
             <button
               onClick={downloadZip}
-              className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl whitespace-nowrap"
+              disabled={downloadProgress !== null}
+              className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Download className="w-5 h-5" />
-              <span>📦 Relaunch-Paket herunterladen</span>
+              {downloadProgress ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span>Lade Bilder herunter ({downloadProgress.current}/{downloadProgress.total})...</span>
+                </>
+              ) : (
+                <>
+                  <Download className="w-5 h-5" />
+                  <span>📦 Relaunch-Paket herunterladen</span>
+                </>
+              )}
             </button>
           </div>
 
@@ -343,7 +441,7 @@ export default function HarvestPage() {
 
               {/* Socials */}
               {result.global.socials && result.global.socials.length > 0 && (
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Globe className="w-5 h-5 text-purple-500" />
                     <h3 className="font-semibold text-white">Social Links ({result.global.socials.length})</h3>
@@ -538,9 +636,9 @@ export default function HarvestPage() {
                                   title="URL kopieren"
                                 >
                                   📋
-                                </button>
-                              </div>
-                            </div>
+            </button>
+          </div>
+        </div>
                           );
                         })}
                       </div>
