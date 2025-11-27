@@ -1,7 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import { Search, Loader2, ImageIcon, FileText, CheckCircle, AlertCircle, Mail, Phone, Globe, Copy, Check } from 'lucide-react'
+import { Search, Loader2, ImageIcon, FileText, CheckCircle, AlertCircle, Mail, Phone, Globe, Copy, Check, Download } from 'lucide-react'
+import JSZip from 'jszip'
+import { saveAs } from 'file-saver'
 
 interface PageData {
   url: string
@@ -77,6 +79,119 @@ export default function HarvestPage() {
 
   const selectedPage = result?.pages?.[selectedPageIndex]
 
+  const downloadZip = async () => {
+    if (!result) return
+
+    const zip = new JSZip()
+
+    // Extract domain name from URL for filename
+    let domainName = 'website'
+    try {
+      if (url) {
+        const urlObj = new URL(url.startsWith('http') ? url : `https://${url}`)
+        domainName = urlObj.hostname.replace(/^www\./, '').replace(/\./g, '-')
+      }
+    } catch (e) {
+      // Use default if URL parsing fails
+    }
+
+    // File 1: projekt_info.json - Full raw JSON
+    zip.file('projekt_info.json', JSON.stringify(result, null, 2))
+
+    // File 2: kontakt_info.txt - Contact information
+    let kontaktInfo = '=== KONTAKTINFORMATIONEN ===\n\n'
+    
+    if (result.global?.emails && result.global.emails.length > 0) {
+      kontaktInfo += '📧 E-MAILS:\n'
+      result.global.emails.forEach(email => {
+        kontaktInfo += `  - ${email}\n`
+      })
+      kontaktInfo += '\n'
+    }
+
+    if (result.global?.phones && result.global.phones.length > 0) {
+      kontaktInfo += '📞 TELEFONNUMMERN:\n'
+      result.global.phones.forEach(phone => {
+        kontaktInfo += `  - ${phone}\n`
+      })
+      kontaktInfo += '\n'
+    }
+
+    if (result.global?.socials && result.global.socials.length > 0) {
+      kontaktInfo += '🌐 SOCIAL MEDIA:\n'
+      result.global.socials.forEach(social => {
+        kontaktInfo += `  - ${social}\n`
+      })
+      kontaktInfo += '\n'
+    }
+
+    if (!result.global?.emails?.length && !result.global?.phones?.length && !result.global?.socials?.length) {
+      kontaktInfo += 'Keine Kontaktinformationen gefunden.\n'
+    }
+
+    zip.file('kontakt_info.txt', kontaktInfo)
+
+    // Folder: /seiten - Create markdown files for each page
+    const seitenFolder = zip.folder('seiten')
+    
+    if (result.pages && result.pages.length > 0 && seitenFolder) {
+      result.pages.forEach((page, index) => {
+        // Create a safe filename from the page title or URL
+        let filename = `seite-${index + 1}`
+        if (page.title) {
+          filename = page.title
+            .toLowerCase()
+            .replace(/[^a-z0-9äöüß]+/g, '-')
+            .replace(/^-+|-+$/g, '')
+            .substring(0, 50)
+        } else if (page.url) {
+          try {
+            const pathname = new URL(page.url).pathname
+            if (pathname && pathname !== '/') {
+              filename = pathname
+                .replace(/^\/|\/$/g, '')
+                .replace(/\//g, '-')
+                .replace(/[^a-z0-9-]/g, '')
+                .substring(0, 50)
+            }
+          } catch (e) {
+            // Use default filename
+          }
+        }
+
+        // Build markdown content
+        let mdContent = `# ${page.title || 'Ohne Titel'}\n\n`
+        mdContent += `**URL:** ${page.url}\n\n`
+        mdContent += `---\n\n`
+
+        if (page.content) {
+          mdContent += `## Extrahierter Text:\n\n${page.content}\n\n`
+        }
+
+        if (page.images && page.images.length > 0) {
+          mdContent += `## Bilder auf dieser Seite (${page.images.length}):\n\n`
+          page.images.forEach((imgItem: any) => {
+            let imgUrl = ''
+            if (typeof imgItem === 'string') {
+              imgUrl = imgItem
+            } else if (typeof imgItem === 'object' && imgItem !== null) {
+              imgUrl = imgItem.src || imgItem.url || imgItem.link || ''
+            }
+            if (imgUrl) {
+              mdContent += `- ${imgUrl}\n`
+            }
+          })
+        }
+
+        seitenFolder.file(`${filename}.md`, mdContent)
+      })
+    }
+
+    // Generate and download the ZIP
+    const blob = await zip.generateAsync({ type: 'blob' })
+    saveAs(blob, `relaunch-paket-${domainName}.zip`)
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -135,15 +250,26 @@ export default function HarvestPage() {
       {/* Results Section */}
       {result && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-          {/* Success Banner */}
-          <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 flex items-center gap-3">
-            <CheckCircle className="w-5 h-5 text-green-400" />
-            <div className="flex-1">
-              <p className="text-green-400 font-medium">Crawling erfolgreich abgeschlossen</p>
-              <p className="text-sm text-slate-400 mt-1">
-                {result.pages?.length || 0} Seiten gefunden
-              </p>
+          {/* Success Banner with Download Button */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex-1 bg-green-500/10 border border-green-500/20 rounded-xl p-4 flex items-center gap-3">
+              <CheckCircle className="w-5 h-5 text-green-400" />
+              <div className="flex-1">
+                <p className="text-green-400 font-medium">Crawling erfolgreich abgeschlossen</p>
+                <p className="text-sm text-slate-400 mt-1">
+                  {result.pages?.length || 0} Seiten gefunden
+                </p>
+              </div>
             </div>
+            
+            {/* Download Button */}
+            <button
+              onClick={downloadZip}
+              className="px-6 py-4 bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white font-semibold rounded-xl transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl whitespace-nowrap"
+            >
+              <Download className="w-5 h-5" />
+              <span>📦 Relaunch-Paket herunterladen</span>
+            </button>
           </div>
 
           {/* Global Contact Data */}
