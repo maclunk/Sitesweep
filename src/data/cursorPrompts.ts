@@ -18,150 +18,160 @@ export const systemPrompts: SystemPrompt[] = [
     id: 'craft-relaunch',
     title: 'Handwerker / Craft Relaunch',
     description: 'Für Maler, Dachdecker, SHK-Betriebe. Nutzt das Template_Craft.tsx für eine robuste, vertrauenswürdige Präsenz.',
-    promptText: `Ich möchte eine neue Seite für einen Handwerkskunden bauen.
+    promptText: `Ich möchte die bestehende Website eines Handwerkskunden neu designen.
+
+⚠️ WICHTIG - STRIKTE REGEL:
+- Verwende NUR die Texte aus den vorhandenen Dateien (startseite.md, kontakt.txt)
+- Erfinde KEINE neuen Inhalte, Headlines oder Texte
+- Füge KEINE zusätzlichen Leistungen oder Features hinzu
+- Verwende NUR die vorhandenen Bilder (keine neuen URLs, keine Platzhalter)
+- Wenn etwas fehlt → Lass es weg, erfinde es NICHT
 
 INPUT:
 1. Design-Basis: Die Komponente \`Template_Craft.tsx\` (aus meiner Library).
 2. Inhalt: Die Textdatei \`startseite.md\` (aus dem Harvester-ZIP).
 3. Bilder: Die Bilder im Ordner \`/images\` (aus dem Harvester-ZIP).
+4. Kontaktdaten: Die Datei \`kontakt_info.txt\` (aus dem Harvester-ZIP).
 
 AUFGABE:
 Erstelle die Datei \`/app/page.tsx\`.
-- Importiere \`Template_Craft\`.
-- Mappe die Inhalte aus der Markdown-Datei intelligent auf die Props der Komponente (heroHeadline, services, contact).
-- Nutze die lokal vorhandenen Bilder. Falls Bilder fehlen, nutze Unsplash-Platzhalter (Thema: Construction, Tools, Handwerk).
-- Die Seite muss fix und fertig kompilieren.
-- Achte auf korrekte TypeScript-Typen.
-- Verwende Next.js 14 App Router Konventionen.
+- Importiere \`Template_Craft\` und übergebe die Props.
+- Mappe die EXISTIERENDEN Inhalte aus der Markdown-Datei 1:1 auf die Komponente.
+- Nutze NUR die lokal vorhandenen Bilder aus \`/images\`.
+- Verwende die exakten Texte - keine Umformulierungen, keine "Verbesserungen".
+- Übernimm Telefonnummer, E-Mail und Adresse genau aus \`kontakt_info.txt\`.
 
-DESIGN-VORGABEN:
-- Farben: Kräftige, handwerkliche Farben (Blau, Orange, Grau)
-- Schrift: Sans-serif, gut lesbar
-- Bilder: Hochwertig, professionell (keine Stock-Foto-Klischees)
-- Call-to-Actions: Prominent, klar formuliert
+CONTENT-MAPPING (1:1):
+- Hero-Headline → Übernimm die erste H1 aus startseite.md (exakt)
+- Leistungen → Übernimm die Liste aus dem Abschnitt "Leistungen" (exakt, keine Erfindungen)
+- Über-uns-Text → Übernimm den "Über uns" Abschnitt (falls vorhanden)
+- Kontakt → Übernimm Telefon/E-Mail/Adresse aus kontakt_info.txt
 
-CONTENT-STRUKTUR:
-- Hero mit starker Headline (Problem → Lösung)
-- Leistungen (3-6 Kacheln mit Icons)
-- Über uns (Meisterbetrieb, Erfahrung, Team)
-- Prozess (Wie wir arbeiten, 3-5 Schritte)
-- Kontakt (Telefon, E-Mail, Adresse, Google Maps)
-
-TECHNISCHE ANFORDERUNGEN:
+TECHNISCHE OPTIMIERUNG (Dein Fokus):
+- Saubere TypeScript-Typen
+- Next.js 14 App Router Best Practices
 - Responsive Design (Mobile First)
-- SEO-optimiert (Meta-Tags, strukturierte Daten)
-- Performance (optimierte Bilder, Lazy Loading)
-- Accessibility (ARIA-Labels, Kontraste)`
+- SEO: Meta-Tags aus den vorhandenen Texten generieren
+- Performance: Bilder optimieren (next/image)
+- Accessibility: Semantisches HTML, ARIA-Labels
+
+DO NOT:
+❌ Neue Texte erfinden
+❌ Leistungen hinzufügen, die nicht im Harvester-Text stehen
+❌ Headlines "verbessern" oder umschreiben
+❌ Platzhalter-Bilder einfügen (Unsplash, Lorem Picsum, etc.)
+❌ Fake-Testimonials oder Bewertungen hinzufügen`
   },
   {
     id: 'trust-relaunch',
     title: 'Kanzlei & Praxis / Trust Relaunch',
     description: 'Für Anwälte, Ärzte, Steuerberater. Nutzt das Template_Trust.tsx für eine seriöse, vertrauenswürdige Darstellung.',
-    promptText: `Ich baue eine Website für einen vertrauenswürdigen Dienstleister (Arzt/Anwalt/Steuerberater).
+    promptText: `Ich möchte die bestehende Website einer Kanzlei/Praxis neu designen.
+
+⚠️ WICHTIG - STRIKTE REGEL:
+- Verwende NUR die Texte aus den vorhandenen Dateien (startseite.md, kontakt_info.txt)
+- Erfinde KEINE neuen Leistungen, Rechtsgebiete oder Behandlungsmethoden
+- Füge KEINE Team-Mitglieder hinzu, die nicht im Harvester-Text stehen
+- Verwende NUR die vorhandenen Bilder (keine Stock-Fotos einfügen)
+- Keine erfundenen Öffnungszeiten, Notfall-Nummern oder Preise
+- Wenn etwas fehlt → Lass es weg, erfinde es NICHT
 
 INPUT:
 1. Design-Basis: Die Komponente \`Template_Trust.tsx\`.
-2. Inhalt: Die Textdatei \`startseite.md\` + \`kontakt.txt\`.
-3. Team-Fotos (falls vorhanden): \`/images/team/\`.
+2. Inhalt: Die Textdatei \`startseite.md\` (aus dem Harvester-ZIP).
+3. Kontaktdaten: Die Datei \`kontakt_info.txt\` (aus dem Harvester-ZIP).
+4. Bilder: NUR die Bilder aus \`/images/\` (falls vorhanden).
 
 AUFGABE:
 Erstelle die \`/app/page.tsx\`.
-- Nutze eine seriöse, professionelle Tonalität.
-- Fülle die 'Services'-Sektion mit den extrahierten Leistungen aus dem Text (z.B. Rechtsgebiete, Behandlungsmethoden).
-- Achte darauf, dass Telefonnummer und E-Mail im Header korrekt verlinkt sind (tel:, mailto:).
-- Farbgebung: Dunkelblau / Schiefergrau (passend zum Template).
-- Verwende hochwertige, authentische Bilder (keine übertriebenen Stock-Fotos).
+- Importiere \`Template_Trust\` und übergebe die Props.
+- Mappe die EXISTIERENDEN Inhalte 1:1 auf die Komponente.
+- Übernimm alle Texte wörtlich - keine Umformulierungen.
+- Verwende NUR vorhandene Bilder aus \`/images/\`.
+- Telefonnummer und E-Mail aus \`kontakt_info.txt\` übernehmen (exakt).
 
-DESIGN-VORGABEN:
-- Farben: Vertrauensbildend (Dunkelblau, Grau, Weiß)
-- Typografie: Seriös, gut lesbar (z.B. Inter, Open Sans)
-- Layout: Klar strukturiert, viel Weißraum
-- Bilder: Professionell, authentisch (echte Team-Fotos bevorzugt)
+CONTENT-MAPPING (1:1):
+- Hero-Headline → Übernimm die erste H1 aus startseite.md (exakt)
+- Leistungen/Rechtsgebiete → Übernimm die Liste aus dem "Leistungen"-Abschnitt (falls vorhanden, sonst weglassen)
+- Team → Übernimm Namen/Qualifikationen aus dem "Team"-Abschnitt (falls vorhanden, sonst weglassen)
+- Über uns → Übernimm den vorhandenen Text (exakt, keine Ergänzungen)
+- Kontakt → Telefon/E-Mail/Adresse aus kontakt_info.txt (exakt)
 
-CONTENT-STRUKTUR:
-- Hero mit vertrauensbildender Headline (Kompetenz + Empathie)
-- Leistungen / Fachgebiete (detailliert beschrieben)
-- Team-Vorstellung (mit Fotos, Qualifikationen)
-- Philosophie / Werte (Warum uns wählen?)
-- Kontakt & Terminbuchung (niederschwellig, einladend)
+TECHNISCHE OPTIMIERUNG (Dein Fokus):
+- Saubere TypeScript-Typen
+- Next.js 14 App Router
+- Responsive Design
+- SEO: Meta-Tags aus den vorhandenen Texten
+- Accessibility: Semantisches HTML
+- Links: tel: und mailto: richtig verlinken
 
-BESONDERHEITEN FÜR MEDIZINISCHE PRAXEN:
-- Öffnungszeiten prominent
-- Notfall-Kontakt hervorheben
-- Barrierefreiheit erwähnen (falls zutreffend)
-- Online-Terminbuchung integrieren (falls gewünscht)
-
-BESONDERHEITEN FÜR KANZLEIEN:
-- Rechtsgebiete klar gliedern
-- Erstberatung / Kostenvoranschlag erwähnen
-- Diskretion / Schweigepflicht betonen
-- Erfolge / Spezialisierungen hervorheben
-
-TECHNISCHE ANFORDERUNGEN:
-- DSGVO-konform (Privacy Policy, Cookie Banner)
-- SSL/HTTPS (für sensible Daten)
-- Kontaktformular mit Spam-Schutz
-- Mobile-optimiert (viele Patienten/Mandanten suchen mobil)`
+DO NOT:
+❌ Neue Leistungen oder Rechtsgebiete erfinden
+❌ Team-Mitglieder hinzufügen, die nicht im Harvester stehen
+❌ Öffnungszeiten erfinden (nur wenn explizit im Text)
+❌ Fake-Bewertungen oder Testimonials
+❌ Platzhalter-Bilder einfügen
+❌ Texte "verbessern" oder umschreiben`
   },
   {
     id: 'modern-relaunch',
     title: 'Modern / Agentur Relaunch',
     description: 'Für Coaches, Agenturen, Startups. Nutzt das Template_Modern.tsx für einen frischen, dynamischen Auftritt.',
-    promptText: `Erstelle eine Landingpage im modernen SaaS-Stil.
+    promptText: `Ich möchte die bestehende Website eines Coaches/einer Agentur neu designen.
+
+⚠️ WICHTIG - STRIKTE REGEL:
+- Verwende NUR die Texte aus den vorhandenen Dateien (startseite.md)
+- Erfinde KEINE neue Value Proposition oder Features
+- Füge KEINE Testimonials, Bewertungen oder Kundenzahlen hinzu, die nicht im Text stehen
+- Verwende NUR die vorhandenen Bilder und Logos (keine neuen einfügen)
+- Keine erfundenen Preise, Angebote oder "Limited Offers"
+- Wenn etwas fehlt → Lass es weg, erfinde es NICHT
 
 INPUT:
 1. Design-Basis: \`Template_Modern.tsx\`.
-2. Inhalt: \`startseite.md\`.
-3. Brand Assets: \`/public/logo.svg\`, \`/public/brand-colors.json\` (falls vorhanden).
+2. Inhalt: Die Textdatei \`startseite.md\` (aus dem Harvester-ZIP).
+3. Kontaktdaten: Die Datei \`kontakt_info.txt\` (aus dem Harvester-ZIP).
+4. Bilder: NUR die Bilder aus \`/images/\` und Logo aus \`/public/\` (falls vorhanden).
 
 AUFGABE:
-- Extrahiere die "Unique Value Proposition" (UVP) aus dem Text für die Hero-Headline.
-- Nutze 'lucide-react' Icons für die Feature-Liste (wähle passende Icons intelligent aus).
-- Das Design soll viel Weißraum haben (Clean Look).
-- Animationen: Subtile Hover-Effekte, Scroll-Animationen (framer-motion).
-- Call-to-Actions: Prominent, conversion-optimiert.
+Erstelle die \`/app/page.tsx\`.
+- Importiere \`Template_Modern\` und übergebe die Props.
+- Mappe die EXISTIERENDEN Inhalte 1:1 auf die Komponente.
+- Übernimm alle Texte wörtlich - keine Umformulierungen.
+- Verwende NUR vorhandene Bilder aus \`/images/\`.
+- UVP/Headline → Übernimm die erste H1 aus startseite.md (exakt).
 
-DESIGN-VORGABEN:
-- Farben: Modern, lebendig (z.B. Gradient-Akzente)
-- Typografie: Klar, modern (z.B. Inter, Poppins)
-- Layout: Asymmetrisch, dynamisch, viel Whitespace
-- Bilder: Illustrationen oder hochwertige Fotos
-- Interaktivität: Hover-Effekte, Micro-Interactions
+CONTENT-MAPPING (1:1):
+- Hero-Headline → Die vorhandene H1 aus startseite.md (exakt, nicht umschreiben)
+- Features/Leistungen → Übernimm die Liste aus dem Text (falls vorhanden)
+- Über uns → Übernimm den vorhandenen Text (exakt)
+- Social Proof → NUR wenn explizit im Harvester-Text (keine Erfindungen)
+- CTA-Button-Text → Übernimm den vorhandenen Text (z.B. "Kontakt aufnehmen")
+- Kontakt → Telefon/E-Mail aus kontakt_info.txt
 
-CONTENT-STRUKTUR:
-- Hero mit starker UVP (Wert in 1 Satz)
-- Problem-Awareness (Warum braucht der Kunde das?)
-- Lösung / Features (3-6 Hauptfeatures mit Icons)
-- Social Proof (Testimonials, Logos, Zahlen)
-- Pricing (falls zutreffend, klar und transparent)
-- Call-to-Action (mehrfach, prominent)
+TECHNISCHE OPTIMIERUNG (Dein Fokus):
+- Saubere TypeScript-Typen
+- Next.js 14 App Router
+- Responsive Design (Mobile First)
+- Icons: Wähle passende Icons aus 'lucide-react' für die vorhandenen Features
+- Animationen: Subtile Hover-Effekte, Scroll-Reveal (framer-motion)
+- SEO: Meta-Tags aus den vorhandenen Texten
+- Performance: next/image für Optimierung
 
-MODERNE FEATURES:
-- Dark Mode Support (falls gewünscht)
-- Scroll-Animationen (Elemente faden beim Scrollen ein)
-- Gradient-Buttons (moderne Farbverläufe)
-- Glasmorphism-Effekte (subtil, nicht übertrieben)
-- Interactive Cards (Hover-Effekte, 3D-Transforms)
+DESIGN-STIL:
+- Viel Weißraum (Clean Look)
+- Moderne, klare Typografie
+- Subtile Animationen (nicht übertrieben)
+- Responsive (Mobile First)
 
-CONVERSION-OPTIMIERUNG:
-- Above-the-Fold: Klare Value Proposition + CTA
-- Social Proof früh einbinden (Logo-Bar, Testimonial)
-- Reibungslose User Journey (logischer Aufbau)
-- Urgency schaffen (Limited Offer, nur noch X Plätze)
-- Trust-Elemente (Sicherheit, Geld-zurück-Garantie)
-
-TECHNISCHE ANFORDERUNGEN:
-- Performance: Lighthouse Score > 90
-- SEO: Meta-Tags, Open Graph, Schema.org
-- Analytics: Google Analytics / Plausible eingebunden
-- Tracking: Conversion-Events für wichtige Aktionen
-- A/B-Testing ready (falls gewünscht)
-
-TONE OF VOICE:
-- Dynamisch, inspirierend
-- Du-Ansprache (persönlich, direkt)
-- Emotionen wecken (nicht nur Features listen)
-- Storytelling nutzen (Problem → Lösung → Transformation)`
+DO NOT:
+❌ Neue Features oder Value Propositions erfinden
+❌ Testimonials hinzufügen, die nicht im Harvester stehen
+❌ Fake-Kundenzahlen oder Statistiken
+❌ "Limited Offer" oder Urgency-Elemente erfinden
+❌ Preise hinzufügen, die nicht im Text stehen
+❌ Headlines "optimieren" oder umschreiben
+❌ Platzhalter-Bilder einfügen`
   }
 ]
 

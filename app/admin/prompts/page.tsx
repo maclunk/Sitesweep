@@ -39,21 +39,36 @@ export default function PromptsPage() {
               </li>
               <li className="flex gap-2">
                 <span className="text-blue-400 font-bold">2.</span>
-                <span>Kopiere den Prompt mit dem Button unten rechts.</span>
+                <span>Stelle sicher, dass du die Harvester-Daten bereit hast (startseite.md, Bilder, kontakt_info.txt).</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-blue-400 font-bold">3.</span>
-                <span>Öffne Cursor AI und füge den Prompt im Chat ein.</span>
+                <span>Kopiere den Prompt mit dem Button und füge ihn in Cursor AI ein.</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-blue-400 font-bold">4.</span>
-                <span>Stelle sicher, dass du die Input-Dateien bereit hast (startseite.md, Bilder, etc.).</span>
+                <span><strong className="text-yellow-400">⚠️ Wichtig:</strong> Cursor wird NUR die vorhandenen Daten nutzen - keine Inhalte erfinden!</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-blue-400 font-bold">5.</span>
-                <span>Cursor baut die Website automatisch nach deinen Vorgaben!</span>
+                <span>Cursor redesigned die Website mit den echten Kundendaten.</span>
               </li>
             </ol>
+          </div>
+        </div>
+      </div>
+
+      {/* Warning Banner */}
+      <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4">
+        <div className="flex items-start gap-3">
+          <span className="text-2xl">⚠️</span>
+          <div>
+            <h4 className="font-semibold text-yellow-400 mb-1">Wichtiger Hinweis zu den Prompts</h4>
+            <p className="text-sm text-slate-300">
+              Alle Prompts sind so geschrieben, dass Cursor <strong>STRIKT</strong> nur die vorhandenen Harvester-Daten nutzt.
+              Es werden <strong>keine neuen Texte erfunden</strong>, keine Features hinzugefügt und keine Platzhalter-Inhalte generiert.
+              Das bedeutet: Was der Kunde nicht hat, kommt auch nicht auf die Website. Das ist gewollt und schützt vor falschen Versprechungen.
+            </p>
           </div>
         </div>
       </div>
@@ -119,34 +134,38 @@ export default function PromptsPage() {
             <div className="px-6 pb-6">
               <div className="bg-slate-950 border border-slate-700 rounded-lg p-4">
                 <h4 className="text-sm font-semibold text-slate-300 mb-2 flex items-center gap-2">
-                  💡 Voraussetzungen für diesen Prompt:
+                  📋 Benötigte Dateien (Cursor nutzt NUR diese):
                 </h4>
                 <ul className="space-y-1 text-xs text-slate-400">
                   {prompt.id === 'craft-relaunch' && (
                     <>
-                      <li>✓ Template_Craft.tsx Komponente bereit</li>
-                      <li>✓ startseite.md aus Harvester-ZIP</li>
-                      <li>✓ Bilder in /images/ Ordner</li>
-                      <li>✓ Next.js 14 Projekt initialisiert</li>
+                      <li>✓ startseite.md (Harvester-Daten)</li>
+                      <li>✓ kontakt_info.txt (Harvester-Daten)</li>
+                      <li>✓ Bilder aus /images/ (Harvester-Daten)</li>
+                      <li>✓ Template_Craft.tsx (Design-Basis)</li>
                     </>
                   )}
                   {prompt.id === 'trust-relaunch' && (
                     <>
-                      <li>✓ Template_Trust.tsx Komponente bereit</li>
-                      <li>✓ startseite.md + kontakt.txt</li>
-                      <li>✓ Optional: Team-Fotos in /images/team/</li>
-                      <li>✓ Kontaktdaten (Telefon, E-Mail) verfügbar</li>
+                      <li>✓ startseite.md (Harvester-Daten)</li>
+                      <li>✓ kontakt_info.txt (Harvester-Daten)</li>
+                      <li>✓ Bilder aus /images/ (Harvester-Daten, falls vorhanden)</li>
+                      <li>✓ Template_Trust.tsx (Design-Basis)</li>
                     </>
                   )}
                   {prompt.id === 'modern-relaunch' && (
                     <>
-                      <li>✓ Template_Modern.tsx Komponente bereit</li>
-                      <li>✓ startseite.md mit UVP</li>
-                      <li>✓ Optional: brand-colors.json, logo.svg</li>
-                      <li>✓ lucide-react & framer-motion installiert</li>
+                      <li>✓ startseite.md (Harvester-Daten)</li>
+                      <li>✓ kontakt_info.txt (Harvester-Daten)</li>
+                      <li>✓ Bilder/Logo aus /images/ & /public/ (falls vorhanden)</li>
+                      <li>✓ Template_Modern.tsx (Design-Basis)</li>
                     </>
                   )}
                 </ul>
+                <p className="mt-3 text-xs text-yellow-400 flex items-start gap-2">
+                  <span>⚠️</span>
+                  <span>Wenn Dateien fehlen: Cursor lässt diese Bereiche weg. Keine Platzhalter!</span>
+                </p>
               </div>
             </div>
           </div>
@@ -160,20 +179,36 @@ export default function PromptsPage() {
           <div className="space-y-2">
             <h4 className="font-semibold text-slate-300">Vor dem Prompting:</h4>
             <ul className="space-y-1 text-slate-400">
-              <li>• Harvester-Daten vorbereiten (ZIP entpacken)</li>
-              <li>• Template-Komponente in /components/ platzieren</li>
-              <li>• Projekt-Struktur prüfen (Next.js 14 App Router)</li>
-              <li>• Dependencies installieren (npm install)</li>
+              <li>✓ Harvester-ZIP entpacken (startseite.md, Bilder, kontakt_info.txt)</li>
+              <li>✓ Template-Komponente bereitstellen</li>
+              <li>✓ Projekt-Struktur prüfen (Next.js 14)</li>
+              <li>✓ Prüfen: Sind ALLE Dateien da? (Cursor erfindet nichts nach!)</li>
             </ul>
           </div>
           <div className="space-y-2">
             <h4 className="font-semibold text-slate-300">Nach dem Prompting:</h4>
             <ul className="space-y-1 text-slate-400">
-              <li>• Code-Qualität prüfen (npm run build)</li>
-              <li>• SEO-Meta-Tags kontrollieren</li>
-              <li>• Mobile-Ansicht testen (Responsive)</li>
-              <li>• Performance optimieren (Bilder, Fonts)</li>
+              <li>✓ Prüfen: Wurden NUR vorhandene Daten genutzt?</li>
+              <li>✓ Build-Test (npm run build)</li>
+              <li>✓ Mobile-Ansicht testen</li>
+              <li>✓ Kontaktdaten verifizieren (richtige Links?)</li>
             </ul>
+          </div>
+        </div>
+
+        <div className="mt-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
+          <h4 className="text-sm font-semibold text-red-400 mb-2">🚨 Was Cursor NICHT tun wird:</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs text-slate-400">
+            <div>
+              <p>❌ Neue Texte oder Headlines erfinden</p>
+              <p>❌ Leistungen hinzufügen, die nicht im Harvester stehen</p>
+              <p>❌ Fake-Testimonials oder Bewertungen</p>
+            </div>
+            <div>
+              <p>❌ Platzhalter-Bilder einfügen (Unsplash, etc.)</p>
+              <p>❌ Kontaktdaten erfinden (Öffnungszeiten, Preise)</p>
+              <p>❌ Features "verbessern" oder umschreiben</p>
+            </div>
           </div>
         </div>
       </div>
