@@ -364,22 +364,33 @@ export default function HarvestPage() {
                       {selectedPage.images.map((img, idx) => (
                         <div
                           key={idx}
-                          className="bg-slate-950 border border-slate-800 rounded-lg overflow-hidden group hover:border-blue-500/50 transition-colors relative"
+                          className="bg-slate-950 border border-slate-700 rounded-lg overflow-hidden group hover:border-blue-500/50 transition-colors"
                         >
-                          <div className="aspect-square relative">
+                          {/* Image Container */}
+                          <div className="relative h-48 bg-black/50 flex items-center justify-center">
                             <img
                               src={img.src}
                               alt={img.alt || `Image ${idx + 1}`}
-                              className="w-full h-full object-cover"
+                              referrerPolicy="no-referrer"
+                              className="w-full h-48 object-contain"
                               loading="lazy"
                               onError={(e) => {
-                                e.currentTarget.src = 'https://placehold.co/400x400/1e293b/64748b?text=Bild+nicht+ladbar'
-                                e.currentTarget.className = 'w-full h-full object-cover opacity-50'
+                                e.currentTarget.style.display = 'none'
+                                const fallback = e.currentTarget.nextElementSibling as HTMLElement
+                                if (fallback) fallback.style.display = 'flex'
                               }}
                             />
+                            {/* Fallback if image fails to load */}
+                            <div className="hidden absolute inset-0 w-full h-48 items-center justify-center text-slate-500 bg-slate-800">
+                              <div className="text-center">
+                                <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                                <p className="text-xs">Bild nicht ladbar</p>
+                              </div>
+                            </div>
+                            {/* Copy Button Overlay */}
                             <button
                               onClick={() => handleCopy(img.src, `img-${idx}`)}
-                              className="absolute top-2 right-2 p-2 bg-slate-900/80 hover:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                              className="absolute top-2 right-2 p-2 bg-slate-900/90 hover:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                               title="Bild-URL kopieren"
                             >
                               {copiedStates[`img-${idx}`] ? (
@@ -389,10 +400,25 @@ export default function HarvestPage() {
                               )}
                             </button>
                           </div>
-                          <div className="p-2 border-t border-slate-800">
-                            <p className="text-xs text-slate-400 truncate" title={img.alt || img.src}>
-                              {img.alt || 'Kein Alt-Text'}
-                            </p>
+                          
+                          {/* Image Info */}
+                          <div className="p-2 bg-slate-900 border-t border-slate-700 space-y-1">
+                            {/* Alt Text */}
+                            {img.alt && (
+                              <p className="text-xs text-slate-400 truncate" title={img.alt}>
+                                {img.alt}
+                              </p>
+                            )}
+                            {/* Source URL */}
+                            <a 
+                              href={img.src} 
+                              target="_blank" 
+                              rel="noopener noreferrer"
+                              className="text-xs text-blue-400 hover:text-blue-300 hover:underline truncate block"
+                              title={img.src}
+                            >
+                              {img.src}
+                            </a>
                           </div>
                         </div>
                       ))}
