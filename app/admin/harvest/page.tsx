@@ -217,7 +217,7 @@ export default function HarvestPage() {
 
               {/* Socials */}
               {result.global.socials && result.global.socials.length > 0 && (
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+                <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Globe className="w-5 h-5 text-purple-500" />
                     <h3 className="font-semibold text-white">Social Links ({result.global.socials.length})</h3>
@@ -307,132 +307,111 @@ export default function HarvestPage() {
                   </div>
                 </div>
 
-              {/* Text Content */}
-              {selectedPage.content && (
+                {/* Text Content */}
+                {selectedPage.content && (
+                  <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-slate-300">
+                        <FileText className="w-4 h-4 text-blue-500" />
+                        <span className="font-medium">Extrahierter Text</span>
+                        <span className="text-xs text-slate-500">
+                          ({selectedPage.content?.split(' ').length || 0} Wörter)
+                        </span>
+                      </div>
+                      <button
+                        onClick={() => handleCopy(selectedPage.content || '', 'content')}
+                        className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
+                      >
+                        {copiedStates['content'] ? (
+                          <>
+                            <Check className="w-4 h-4 text-green-400" />
+                            <span className="text-green-400">Kopiert!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="w-4 h-4" />
+                            Text kopieren
+                          </>
+                        )}
+                      </button>
+                    </div>
+                    <div className="p-6">
+                      <div className="bg-slate-950 rounded-lg p-4 max-h-[400px] overflow-y-auto">
+                        <p className="text-sm text-slate-300 whitespace-pre-wrap leading-relaxed">
+                          {selectedPage.content}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Right Column: Images */}
+              <div className="space-y-4">
                 <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                  <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
+                  <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50">
                     <div className="flex items-center gap-2 text-slate-300">
-                      <FileText className="w-4 h-4 text-blue-500" />
-                      <span className="font-medium">Extrahierter Text</span>
-                      <span className="text-xs text-slate-500">
-                        ({selectedPage.content?.split(' ').length || 0} Wörter)
+                      <ImageIcon className="w-4 h-4 text-blue-500" />
+                      <span className="font-medium">
+                        Seiten-Bilder {selectedPage.images && `(${selectedPage.images.length})`}
                       </span>
                     </div>
-                    <button
-                      onClick={() => handleCopy(selectedPage.content || '', 'content')}
-                      className="flex items-center gap-2 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-sm transition-colors"
-                    >
-                      {copiedStates['content'] ? (
-                        <>
-                          <Check className="w-4 h-4 text-green-400" />
-                          <span className="text-green-400">Kopiert!</span>
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-4 h-4" />
-                          Text kopieren
-                        </>
-                      )}
-            </button>
-          </div>
+                  </div>
                   <div className="p-6">
-                    <div className="bg-slate-950 rounded-lg p-4 max-h-[400px] overflow-y-auto">
-                      <p className="text-sm text-slate-300 whitespace-pre-wrap leading-relaxed">
-                        {selectedPage.content}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-            </div>
-
-            {/* Right Column: Images */}
-            <div className="space-y-4">
-              <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
-                <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50">
-                  <div className="flex items-center gap-2 text-slate-300">
-                    <ImageIcon className="w-4 h-4 text-blue-500" />
-                    <span className="font-medium">
-                      Seiten-Bilder {selectedPage.images && `(${selectedPage.images.length})`}
-                    </span>
-                  </div>
-                </div>
-                <div className="p-6">
-                  {selectedPage.images && selectedPage.images.length > 0 ? (
-                    <div className="grid grid-cols-2 gap-4">
-                      {selectedPage.images.map((img, idx) => (
-                        <div
-                          key={idx}
-                          className="bg-slate-950 border border-slate-700 rounded-lg overflow-hidden group hover:border-blue-500/50 transition-colors"
-                        >
-                          {/* Image Container */}
-                          <div className="relative h-48 bg-black/50 flex items-center justify-center">
+                    {selectedPage.images && selectedPage.images.length > 0 ? (
+                      <div className="grid grid-cols-2 gap-4">
+                        {selectedPage.images.map((img, index) => (
+                          <div key={index} className="relative group border border-slate-700 rounded overflow-hidden bg-slate-900">
+                            {/* Image with Fallback and Referrer Policy */}
                             <img
                               src={img.src}
-                              alt={img.alt || `Image ${idx + 1}`}
                               referrerPolicy="no-referrer"
-                              className="w-full h-48 object-contain"
-                              loading="lazy"
+                              alt={img.alt || `Extracted ${index}`}
+                              className="w-full h-48 object-contain bg-black/50"
                               onError={(e) => {
-                                e.currentTarget.style.display = 'none'
-                                const fallback = e.currentTarget.nextElementSibling as HTMLElement
-                                if (fallback) fallback.style.display = 'flex'
+                                e.currentTarget.style.display = 'none';
+                                // Find the fallback div next to it and show it
+                                const fallback = e.currentTarget.parentElement?.querySelector('.fallback-box');
+                                if (fallback) (fallback as HTMLElement).style.display = 'flex';
                               }}
                             />
-                            {/* Fallback if image fails to load */}
-                            <div className="hidden absolute inset-0 w-full h-48 items-center justify-center text-slate-500 bg-slate-800">
-                              <div className="text-center">
-                                <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                                <p className="text-xs">Bild nicht ladbar</p>
-                              </div>
+                            {/* Hidden Fallback Box */}
+                            <div className="fallback-box hidden w-full h-48 items-center justify-center text-slate-500 bg-slate-800 text-xs text-center p-2">
+                              Bild konnte nicht geladen werden (404 oder Blockiert)
                             </div>
+
                             {/* Copy Button Overlay */}
                             <button
-                              onClick={() => handleCopy(img.src, `img-${idx}`)}
+                              onClick={() => handleCopy(img.src, `img-${index}`)}
                               className="absolute top-2 right-2 p-2 bg-slate-900/90 hover:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity shadow-lg"
                               title="Bild-URL kopieren"
                             >
-                              {copiedStates[`img-${idx}`] ? (
+                              {copiedStates[`img-${index}`] ? (
                                 <Check className="w-4 h-4 text-green-400" />
                               ) : (
                                 <Copy className="w-4 h-4 text-white" />
                               )}
                             </button>
+
+                            {/* Debug Link (Always visible) */}
+                            <div className="p-2 bg-slate-950 border-t border-slate-800">
+                              <a href={img.src} target="_blank" rel="noreferrer" className="text-[10px] text-blue-400 hover:underline truncate block">
+                                {img.src}
+                              </a>
+                            </div>
                           </div>
-                          
-                          {/* Image Info */}
-                          <div className="p-2 bg-slate-900 border-t border-slate-700 space-y-1">
-                            {/* Alt Text */}
-                            {img.alt && (
-                              <p className="text-xs text-slate-400 truncate" title={img.alt}>
-                                {img.alt}
-                              </p>
-                            )}
-                            {/* Source URL */}
-                            <a 
-                              href={img.src} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="text-xs text-blue-400 hover:text-blue-300 hover:underline truncate block"
-                              title={img.src}
-                            >
-                              {img.src}
-                            </a>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="text-center py-12 text-slate-500">
-                      <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                      <p className="text-sm">Keine Bilder gefunden</p>
-                    </div>
-                  )}
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-12 text-slate-500">
+                        <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
+                        <p className="text-sm">Keine Bilder gefunden</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           )}
 
           {/* Raw JSON View - Full Result */}
@@ -457,7 +436,7 @@ export default function HarvestPage() {
                     JSON kopieren
                   </>
                 )}
-            </button>
+              </button>
             </div>
             <div className="p-0 overflow-x-auto">
               <pre className="p-4 text-xs md:text-sm font-mono text-green-400 bg-slate-950 leading-relaxed overflow-auto max-h-[600px]">
