@@ -80,8 +80,8 @@ export default function HarvestPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">Content Harvester</h1>
-        <p className="text-slate-400 mt-2">Extract structured content and media from any URL.</p>
+        <h1 className="text-3xl font-bold text-white tracking-tight">Content-Import</h1>
+        <p className="text-slate-400 mt-2">Extrahieren Sie strukturierte Inhalte und Medien von beliebigen URLs.</p>
       </div>
 
       {/* Input Section */}
@@ -111,7 +111,7 @@ export default function HarvestPage() {
                 Crawling...
               </>
             ) : (
-              'Harvest Content'
+              'Inhalte extrahieren'
             )}
           </button>
         </form>
@@ -119,8 +119,8 @@ export default function HarvestPage() {
           <div className="mt-4 p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center gap-3 text-blue-400">
             <Loader2 className="w-5 h-5 animate-spin" />
             <div>
-              <p className="font-medium">Crawling website...</p>
-              <p className="text-sm text-slate-400 mt-1">This may take 30-40 seconds for deep content extraction</p>
+              <p className="font-medium">Website wird durchsucht...</p>
+              <p className="text-sm text-slate-400 mt-1">Dies kann 30-40 Sekunden dauern für die vollständige Extraktion</p>
             </div>
           </div>
         )}
@@ -139,9 +139,9 @@ export default function HarvestPage() {
           <div className="bg-green-500/10 border border-green-500/20 rounded-xl p-4 flex items-center gap-3">
             <CheckCircle className="w-5 h-5 text-green-400" />
             <div className="flex-1">
-              <p className="text-green-400 font-medium">Deep crawl completed successfully</p>
+              <p className="text-green-400 font-medium">Crawling erfolgreich abgeschlossen</p>
               <p className="text-sm text-slate-400 mt-1">
-                Found {result.pages?.length || 0} pages
+                {result.pages?.length || 0} Seiten gefunden
               </p>
             </div>
           </div>
@@ -256,7 +256,7 @@ export default function HarvestPage() {
           {result.pages && result.pages.length > 0 && (
             <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
               <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50">
-                <h3 className="font-semibold text-white">Detected Pages ({result.pages.length})</h3>
+                <h3 className="font-semibold text-white">Gefundene Seiten ({result.pages.length})</h3>
               </div>
               <div className="p-2">
                 <div className="flex flex-wrap gap-2">
@@ -270,7 +270,7 @@ export default function HarvestPage() {
                           : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
                       }`}
                     >
-                      {page.title || new URL(page.url).pathname || 'Page ' + (idx + 1)}
+                      {page.title || new URL(page.url).pathname || 'Seite ' + (idx + 1)}
                     </button>
                   ))}
                 </div>
@@ -288,13 +288,13 @@ export default function HarvestPage() {
                   <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50">
                     <div className="flex items-center gap-2 text-slate-300">
                       <FileText className="w-4 h-4 text-blue-500" />
-                      <span className="font-medium">Page Info</span>
+                      <span className="font-medium">Seiten-Info</span>
                     </div>
                   </div>
                   <div className="p-6 space-y-3">
                     <div>
-                      <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">Title</dt>
-                      <dd className="mt-1 text-sm text-slate-300">{selectedPage.title || 'No title'}</dd>
+                      <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">Titel</dt>
+                      <dd className="mt-1 text-sm text-slate-300">{selectedPage.title || 'Kein Titel'}</dd>
                     </div>
                     <div>
                       <dt className="text-xs font-medium text-slate-500 uppercase tracking-wider">URL</dt>
@@ -313,9 +313,9 @@ export default function HarvestPage() {
                   <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/50 flex items-center justify-between">
                     <div className="flex items-center gap-2 text-slate-300">
                       <FileText className="w-4 h-4 text-blue-500" />
-                      <span className="font-medium">Extracted Text</span>
+                      <span className="font-medium">Extrahierter Text</span>
                       <span className="text-xs text-slate-500">
-                        ({selectedPage.content.split(' ').length} words)
+                        ({selectedPage.content?.split(' ').length || 0} Wörter)
                       </span>
                     </div>
                     <button
@@ -325,12 +325,12 @@ export default function HarvestPage() {
                       {copiedStates['content'] ? (
                         <>
                           <Check className="w-4 h-4 text-green-400" />
-                          <span className="text-green-400">Copied!</span>
+                          <span className="text-green-400">Kopiert!</span>
                         </>
                       ) : (
                         <>
                           <Copy className="w-4 h-4" />
-                          Copy All Text
+                          Text kopieren
                         </>
                       )}
                     </button>
@@ -354,7 +354,7 @@ export default function HarvestPage() {
                   <div className="flex items-center gap-2 text-slate-300">
                     <ImageIcon className="w-4 h-4 text-blue-500" />
                     <span className="font-medium">
-                      Page Images {selectedPage.images && `(${selectedPage.images.length})`}
+                      Seiten-Bilder {selectedPage.images && `(${selectedPage.images.length})`}
                     </span>
                   </div>
                 </div>
@@ -387,7 +387,7 @@ export default function HarvestPage() {
                             <button
                               onClick={() => handleCopy(img.src, `img-${idx}`)}
                               className="absolute top-2 right-2 p-2 bg-slate-900/80 hover:bg-slate-900 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
-                              title="Copy image URL"
+                              title="Bild-URL kopieren"
                             >
                               {copiedStates[`img-${idx}`] ? (
                                 <Check className="w-4 h-4 text-green-400" />
@@ -398,7 +398,7 @@ export default function HarvestPage() {
                           </div>
                           <div className="p-2 border-t border-slate-800">
                             <p className="text-xs text-slate-400 truncate" title={img.alt || img.src}>
-                              {img.alt || 'No alt text'}
+                              {img.alt || 'Kein Alt-Text'}
                             </p>
                           </div>
                         </div>
@@ -407,7 +407,7 @@ export default function HarvestPage() {
                   ) : (
                     <div className="text-center py-12 text-slate-500">
                       <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                      <p className="text-sm">No images found</p>
+                      <p className="text-sm">Keine Bilder gefunden</p>
                     </div>
                   )}
                 </div>
@@ -430,12 +430,12 @@ export default function HarvestPage() {
                 {copiedStates['json'] ? (
                   <>
                     <Check className="w-4 h-4 text-green-400" />
-                    <span className="text-green-400">Copied!</span>
+                    <span className="text-green-400">Kopiert!</span>
                   </>
                 ) : (
                   <>
                     <Copy className="w-4 h-4" />
-                    Copy JSON
+                    JSON kopieren
                   </>
                 )}
               </button>

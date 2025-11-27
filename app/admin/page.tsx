@@ -8,8 +8,8 @@ export default function AdminDashboard() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">Command Center</h1>
-        <p className="text-slate-400 mt-2">Welcome back, Marcus. System is operational.</p>
+        <h1 className="text-3xl font-bold text-white tracking-tight">Dashboard</h1>
+        <p className="text-slate-400 mt-2">Willkommen zurück, Marcus. System ist betriebsbereit.</p>
       </div>
 
       {/* Stats Grid */}
@@ -20,7 +20,7 @@ export default function AdminDashboard() {
               <Activity className="w-6 h-6 text-blue-500" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-500">Total Scans</p>
+              <p className="text-sm font-medium text-slate-500">Gesamte Scans</p>
               <h3 className="text-2xl font-bold text-white">0</h3>
             </div>
           </div>
@@ -32,7 +32,7 @@ export default function AdminDashboard() {
               <Wheat className="w-6 h-6 text-green-500" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-500">Active Leads</p>
+              <p className="text-sm font-medium text-slate-500">Aktive Leads</p>
               <h3 className="text-2xl font-bold text-white">0</h3>
             </div>
           </div>
@@ -44,7 +44,7 @@ export default function AdminDashboard() {
               <Activity className="w-6 h-6 text-purple-500" />
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-500">System Status</p>
+              <p className="text-sm font-medium text-slate-500">System-Status</p>
               <h3 className="text-2xl font-bold text-white">Online</h3>
             </div>
           </div>
@@ -53,7 +53,7 @@ export default function AdminDashboard() {
 
       {/* Quick Actions */}
       <div>
-        <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
+        <h2 className="text-xl font-semibold text-white mb-4">Schnellzugriff</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link 
             href="/admin/scan"
@@ -66,8 +66,8 @@ export default function AdminDashboard() {
                   <Search className="w-6 h-6 text-slate-400 group-hover:text-blue-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-white">Start New Scan</h3>
-                  <p className="text-sm text-slate-500">Audit a single URL deeply</p>
+                  <h3 className="text-lg font-medium text-white">Neuer Scan</h3>
+                  <p className="text-sm text-slate-500">Einzelne URL tiefgehend analysieren</p>
                 </div>
               </div>
               <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-blue-400 transform group-hover:translate-x-1 transition-all" />
@@ -85,8 +85,8 @@ export default function AdminDashboard() {
                   <Wheat className="w-6 h-6 text-slate-400 group-hover:text-green-400" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-medium text-white">Harvest Content</h3>
-                  <p className="text-sm text-slate-500">Extract text & images</p>
+                  <h3 className="text-lg font-medium text-white">Content importieren</h3>
+                  <p className="text-sm text-slate-500">Text & Bilder extrahieren</p>
                 </div>
               </div>
               <ArrowRight className="w-5 h-5 text-slate-500 group-hover:text-green-400 transform group-hover:translate-x-1 transition-all" />

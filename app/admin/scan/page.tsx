@@ -49,8 +49,8 @@ export default function DeepScanPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white tracking-tight">Deep Audit</h1>
-        <p className="text-slate-400 mt-2">Execute a full depth scan on any target URL.</p>
+        <h1 className="text-3xl font-bold text-white tracking-tight">Manueller Scan</h1>
+        <p className="text-slate-400 mt-2">Führen Sie eine vollständige Website-Analyse für beliebige URLs durch.</p>
       </div>
 
       {/* Input Section */}
@@ -64,7 +64,7 @@ export default function DeepScanPage() {
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://target-domain.com"
+              placeholder="https://ziel-domain.de"
               className="block w-full pl-10 pr-3 py-3 bg-slate-950 border border-slate-800 rounded-lg text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 sm:text-sm transition-colors"
             />
           </div>
@@ -73,7 +73,7 @@ export default function DeepScanPage() {
             disabled={loading || !url.trim()}
             className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
           >
-            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Run Deep Audit'}
+            {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Scan starten'}
           </button>
         </form>
         {error && (
@@ -90,8 +90,8 @@ export default function DeepScanPage() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
             {/* Score Card */}
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl flex flex-col items-center justify-center text-center">
-              <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">Overall Score</h3>
+             <div className="bg-slate-900 border border-slate-800 p-6 rounded-xl flex flex-col items-center justify-center text-center">
+               <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">Gesamt-Score</h3>
               <div className="relative inline-flex items-center justify-center">
                  <svg className="w-32 h-32 transform -rotate-90">
                     <circle
@@ -118,30 +118,30 @@ export default function DeepScanPage() {
                   </svg>
                   <span className="absolute text-4xl font-bold text-white">{result.score || 0}</span>
               </div>
-              <div className="mt-4 flex items-center gap-2 text-sm text-slate-400">
-                {result.score >= 90 ? <CheckCircle className="w-4 h-4 text-green-500" /> : <AlertCircle className="w-4 h-4 text-yellow-500" />}
-                {result.score >= 90 ? 'Excellent' : result.score >= 50 ? 'Needs Improvement' : 'Critical'}
-              </div>
+               <div className="mt-4 flex items-center gap-2 text-sm text-slate-400">
+                 {result.score >= 90 ? <CheckCircle className="w-4 h-4 text-green-500" /> : <AlertCircle className="w-4 h-4 text-yellow-500" />}
+                 {result.score >= 90 ? 'Ausgezeichnet' : result.score >= 50 ? 'Verbesserungsbedarf' : 'Kritisch'}
+               </div>
             </div>
 
-            {/* Screenshot Card */}
-            <div className="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-xl">
-              <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">Mobile Preview</h3>
-              <div className="aspect-video bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
-                {(result.mobileScreenshotUrl || result.screenshot) ? (
-                  <img 
-                    src={result.mobileScreenshotUrl || result.screenshot} 
-                    alt="Scan Preview" 
-                    className="h-full object-contain"
-                  />
-                ) : (
-                  <div className="text-slate-600 flex flex-col items-center gap-2">
-                    <Loader2 className="w-6 h-6 animate-spin" />
-                    <span>Processing Screenshot...</span>
-                  </div>
-                )}
-              </div>
-            </div>
+             {/* Screenshot Card */}
+             <div className="lg:col-span-2 bg-slate-900 border border-slate-800 p-6 rounded-xl">
+               <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-4">Mobile-Vorschau</h3>
+               <div className="aspect-video bg-slate-950 rounded-lg border border-slate-800 flex items-center justify-center overflow-hidden">
+                 {(result.mobileScreenshotUrl || result.screenshot) ? (
+                   <img 
+                     src={result.mobileScreenshotUrl || result.screenshot} 
+                     alt="Scan Preview" 
+                     className="h-full object-contain"
+                   />
+                 ) : (
+                   <div className="text-slate-600 flex flex-col items-center gap-2">
+                     <Loader2 className="w-6 h-6 animate-spin" />
+                     <span>Screenshot wird verarbeitet...</span>
+                   </div>
+                 )}
+               </div>
+             </div>
           </div>
 
           {/* Raw JSON Viewer */}
@@ -152,11 +152,11 @@ export default function DeepScanPage() {
                 <span className="font-mono text-sm">raw_scan_result.json</span>
               </div>
               <button 
-                onClick={() => navigator.clipboard.writeText(JSON.stringify(result, null, 2))}
-                className="text-xs text-blue-400 hover:text-blue-300 font-medium"
-              >
-                Copy JSON
-              </button>
+                 onClick={() => navigator.clipboard.writeText(JSON.stringify(result, null, 2))}
+                 className="text-xs text-blue-400 hover:text-blue-300 font-medium"
+               >
+                 JSON kopieren
+               </button>
             </div>
             <div className="p-0 overflow-x-auto">
               <pre className="p-4 text-xs md:text-sm font-mono text-green-400 bg-slate-950 leading-relaxed overflow-auto max-h-[600px]">

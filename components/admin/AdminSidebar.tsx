@@ -10,10 +10,10 @@ function cn(...classes: (string | undefined | null | false)[]): string {
 }
 
 const navigation = [
-  { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
-  { name: 'Deep Scan', href: '/admin/scan', icon: Search },
-  { name: 'Content Harvest', href: '/admin/harvest', icon: Wheat },
-  { name: 'Lead List', href: '/admin/leads', icon: Users },
+  { name: 'Übersicht', href: '/admin', icon: LayoutDashboard },
+  { name: 'Einzel-Scan', href: '/admin/scan', icon: Search },
+  { name: 'Content-Import', href: '/admin/harvest', icon: Wheat },
+  { name: 'Leads', href: '/admin/leads', icon: Users },
 ]
 
 export function AdminSidebar() {
@@ -52,19 +52,19 @@ export function AdminSidebar() {
         })}
       </div>
 
-      <div className="p-4 border-t border-slate-800">
-        <button
-          onClick={() => {
-            // Simple logout: clear potentially stored credentials (if any client-side) and force reload/redirect
-            // Since we use Basic Auth, real "logout" is tricky without closing browser, but we can redirect.
-            window.location.href = '/'
-          }}
-          className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
-        >
-          <LogOut className="h-5 w-5" />
-          Logout
-        </button>
-      </div>
+       <div className="p-4 border-t border-slate-800">
+         <button
+           onClick={() => {
+             // Simple logout: clear potentially stored credentials (if any client-side) and force reload/redirect
+             // Since we use Basic Auth, real "logout" is tricky without closing browser, but we can redirect.
+             window.location.href = '/'
+           }}
+           className="flex w-full items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors"
+         >
+           <LogOut className="h-5 w-5" />
+           Abmelden
+         </button>
+       </div>
     </div>
   )
 }
