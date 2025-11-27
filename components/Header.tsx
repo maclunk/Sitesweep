@@ -20,11 +20,11 @@ export default function Header() {
   return (
     <header className="px-4 py-4 md:sticky md:top-4 md:z-50">
       <div className="max-w-6xl mx-auto">
-        <nav className="bg-white md:bg-white/95 md:backdrop-blur-sm md:rounded-2xl md:shadow-soft-lg md:border md:border-slate-200/50 px-4 md:px-6 py-3 md:py-4 flex items-center justify-between gap-4 flex-wrap">
-          {/* Left: Logo + Tagline */}
+        <nav className="bg-white md:bg-white/95 md:backdrop-blur-sm md:rounded-2xl md:shadow-soft-lg md:border md:border-slate-200/50 px-4 md:px-6 py-3 md:py-4 flex flex-col md:flex-row items-center md:justify-between gap-4">
+          {/* Logo - Centered on Mobile */}
           <Link 
             href="/" 
-            className="flex flex-col gap-1 group"
+            className="flex flex-col gap-1 group text-center md:text-left"
             onClick={handleLogoClick}
           >
             <span className="text-2xl md:text-3xl font-bold text-slate-900 group-hover:text-primary transition-colors leading-tight">
@@ -35,8 +35,8 @@ export default function Header() {
             </span>
           </Link>
           
-          {/* Center: Navigation Links */}
-          <div className="flex items-center gap-6 flex-wrap">
+          {/* Navigation Links - Centered on Mobile */}
+          <div className="flex items-center gap-6 flex-wrap justify-center md:justify-start">
             <Link 
               href="/" 
               className={`text-sm font-medium transition-colors ${

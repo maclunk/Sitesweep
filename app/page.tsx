@@ -359,7 +359,7 @@ export default function Home() {
             <section className="max-w-6xl mx-auto px-4 space-y-8 py-16">
               {/* Kategorie 1: Sichtbarkeit & SEO */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-                <div className="flex items-start gap-4 mb-6">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6 text-center md:text-left">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
                     <Search className="w-6 h-6 text-slate-700" strokeWidth={2} />
                   </div>
@@ -394,7 +394,7 @@ export default function Home() {
 
               {/* Kategorie 2: Technischer Zustand */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-                <div className="flex items-start gap-4 mb-6">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6 text-center md:text-left">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
                     <Gauge className="w-6 h-6 text-slate-700" strokeWidth={2} />
                   </div>
@@ -434,7 +434,7 @@ export default function Home() {
 
               {/* Kategorie 3: UX & Design */}
               <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-                <div className="flex items-start gap-4 mb-6">
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6 text-center md:text-left">
                   <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
                     <Layout className="w-6 h-6 text-slate-700" strokeWidth={2} />
                   </div>

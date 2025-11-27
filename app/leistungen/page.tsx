@@ -75,13 +75,13 @@ export default function LeistungenPage() {
       
       <main>
         {/* 1. Hero Section */}
-        <section className="py-16 md:py-24 bg-white">
-          <div className="max-w-4xl mx-auto px-4 text-center">
+        <section className="py-12 md:py-24 bg-gradient-to-b from-slate-50 to-white">
+          <div className="max-w-4xl mx-auto px-6 md:px-4 text-center">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-6"
+              className="text-3xl md:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 mb-4 md:mb-6"
             >
               Klare Festpreise. Keine versteckten Kosten.
             </motion.h1>
@@ -89,7 +89,7 @@ export default function LeistungenPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-lg md:text-xl text-slate-600 max-w-2xl mx-auto"
+              className="text-base md:text-lg lg:text-xl text-slate-600 max-w-2xl mx-auto"
             >
               Schluss mit undurchsichtigen Angeboten. Bei uns wissen Sie vorher auf den Cent genau, was Sie bezahlen.
             </motion.p>
