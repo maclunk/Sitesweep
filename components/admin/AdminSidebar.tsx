@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutDashboard, Search, Wheat, Users, FileText, LogOut } from 'lucide-react'
+import { LayoutDashboard, Search, Wheat, Users, FileText, Terminal, LogOut } from 'lucide-react'
 
 // Helper function to combine class names
 function cn(...classes: (string | undefined | null | false)[]): string {
@@ -14,6 +14,7 @@ const navigation = [
   { name: 'Einzel-Scan', href: '/admin/scan', icon: Search },
   { name: 'Content-Import', href: '/admin/harvest', icon: Wheat },
   { name: 'Templates', href: '/admin/templates', icon: FileText },
+  { name: 'Prompts', href: '/admin/prompts', icon: Terminal },
   { name: 'Leads', href: '/admin/leads', icon: Users },
 ]
 
