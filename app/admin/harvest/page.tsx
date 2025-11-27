@@ -359,89 +359,81 @@ export default function HarvestPage() {
                   </div>
                   <div className="p-6">
                     {selectedPage.images && selectedPage.images.length > 0 ? (
-                      <div className="space-y-3">
-                        {selectedPage.images.map((img, index) => (
-                          <div key={index} className="group bg-slate-950 border border-slate-700 rounded-lg p-4 hover:border-blue-500/50 transition-colors">
-                            <div className="flex items-start gap-3">
-                              {/* Thumbnail Preview */}
-                              <div className="flex-shrink-0 w-20 h-20 bg-black/50 border border-slate-700 rounded overflow-hidden flex items-center justify-center">
-                                <img
-                                  src={img.src}
-                                  referrerPolicy="no-referrer"
-                                  alt={`Bild ${index + 1}`}
-                                  className="w-full h-full object-contain"
-                                  onError={(e) => {
-                                    e.currentTarget.style.display = 'none';
-                                    const parent = e.currentTarget.parentElement;
-                                    if (parent) {
-                                      parent.innerHTML = '<svg class="w-8 h-8 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>';
-                                    }
-                                  }}
-                                />
+                      <div className="grid grid-cols-2 gap-4">
+                        {selectedPage.images.map((imgItem: any, index: number) => {
+                          // RESOLVE URL: Handle both string arrays and object arrays
+                          let finalUrl = "";
+                          let altText = "";
+                          
+                          if (typeof imgItem === 'string') {
+                            finalUrl = imgItem;
+                          } else if (typeof imgItem === 'object' && imgItem !== null) {
+                            // Try common keys if it's an object
+                            finalUrl = imgItem.src || imgItem.url || imgItem.link || "";
+                            altText = imgItem.alt || "";
+                          }
+
+                          // Fallback if URL is weird/empty
+                          if (!finalUrl || finalUrl === "undefined") return null;
+
+                          return (
+                            <div key={index} className="relative group border border-slate-700 rounded overflow-hidden bg-slate-900">
+                              <img
+                                src={finalUrl}
+                                referrerPolicy="no-referrer"
+                                alt={altText || `Harvested ${index}`}
+                                className="w-full h-48 object-contain bg-black/50"
+                                onError={(e) => {
+                                  e.currentTarget.style.display = 'none';
+                                  const fallback = e.currentTarget.parentElement?.querySelector('.fallback-box');
+                                  if (fallback) (fallback as HTMLElement).style.display = 'flex';
+                                }}
+                              />
+                              
+                              {/* Fallback Box */}
+                              <div className="fallback-box hidden w-full h-48 items-center justify-center text-slate-500 bg-slate-800 text-xs text-center p-2">
+                                Bild nicht ladbar
                               </div>
 
-                              {/* Image Info & Actions */}
-                              <div className="flex-1 min-w-0 space-y-2">
-                                {/* Alt Text if available */}
-                                {img.alt && (
-                                  <p className="text-sm text-slate-300 font-medium truncate">
-                                    {img.alt}
-                                  </p>
-                                )}
-                                
-                                {/* Full URL - Clickable */}
+                              {/* Debug Link & Copy */}
+                              <div className="p-2 bg-slate-950 border-t border-slate-800 flex justify-between items-center gap-2">
                                 <a 
-                                  href={img.src} 
+                                  href={finalUrl} 
                                   target="_blank" 
-                                  rel="noopener noreferrer"
-                                  className="block text-xs text-blue-400 hover:text-blue-300 hover:underline break-all"
-                                  title="In neuem Tab öffnen"
+                                  rel="noreferrer" 
+                                  className="text-[10px] text-blue-400 hover:underline truncate flex-1 min-w-0"
+                                  title={finalUrl}
                                 >
-                                  {img.src}
+                                  {finalUrl}
                                 </a>
-
-                                {/* Action Buttons */}
-                                <div className="flex gap-2 pt-1">
-                                  <button
-                                    onClick={() => handleCopy(img.src, `img-${index}`)}
-                                    className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs transition-colors"
-                                  >
-                                    {copiedStates[`img-${index}`] ? (
-                                      <>
-                                        <Check className="w-3.5 h-3.5 text-green-400" />
-                                        <span className="text-green-400">Kopiert</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <Copy className="w-3.5 h-3.5" />
-                                        <span>URL kopieren</span>
-                                      </>
-                                    )}
-                                  </button>
-                                  <a
-                                    href={img.src}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="flex items-center gap-1.5 px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-xs transition-colors"
-                                  >
-                                    <ImageIcon className="w-3.5 h-3.5" />
-                                    <span>Öffnen</span>
-                                  </a>
-                                </div>
+                                <button
+                                  onClick={() => navigator.clipboard.writeText(finalUrl)}
+                                  className="text-xs text-slate-400 hover:text-white flex-shrink-0"
+                                  title="URL kopieren"
+                                >
+                                  📋
+                                </button>
                               </div>
                             </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     ) : (
-                      <div className="text-center py-12 text-slate-500">
-                        <ImageIcon className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                        <p className="text-sm">Keine Bilder gefunden</p>
-                      </div>
+                      <p className="text-slate-500 text-sm p-4">Keine Bilder auf dieser Unterseite gefunden.</p>
                     )}
                   </div>
                 </div>
-              </div>
+            </div>
+          </div>
+          )}
+
+          {/* Debug Panel - Raw Data */}
+          {selectedPage && (
+            <div className="mt-6 p-4 bg-black border border-slate-800 rounded">
+              <h3 className="text-xs font-bold text-slate-500 mb-2 uppercase">Debug: Raw Data from Backend (Selected Page)</h3>
+              <pre className="text-[10px] text-green-400 overflow-auto max-h-64 font-mono leading-relaxed">
+                {JSON.stringify(selectedPage, null, 2)}
+              </pre>
             </div>
           )}
 
