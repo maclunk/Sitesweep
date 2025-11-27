@@ -217,7 +217,7 @@ export default function HarvestPage() {
 
               {/* Socials */}
               {result.global.socials && result.global.socials.length > 0 && (
-                <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-6">
                   <div className="flex items-center gap-2 mb-4">
                     <Globe className="w-5 h-5 text-purple-500" />
                     <h3 className="font-semibold text-white">Social Links ({result.global.socials.length})</h3>
@@ -333,8 +333,8 @@ export default function HarvestPage() {
                           Text kopieren
                         </>
                       )}
-                    </button>
-                  </div>
+            </button>
+          </div>
                   <div className="p-6">
                     <div className="bg-slate-950 rounded-lg p-4 max-h-[400px] overflow-y-auto">
                       <p className="text-sm text-slate-300 whitespace-pre-wrap leading-relaxed">
@@ -373,15 +373,8 @@ export default function HarvestPage() {
                               className="w-full h-full object-cover"
                               loading="lazy"
                               onError={(e) => {
-                                const target = e.target as HTMLImageElement
-                                target.style.display = 'none'
-                                const parent = target.parentElement
-                                if (parent) {
-                                  const errorDiv = document.createElement('div')
-                                  errorDiv.className = 'flex items-center justify-center h-full text-slate-600'
-                                  errorDiv.innerHTML = '<svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>'
-                                  parent.appendChild(errorDiv)
-                                }
+                                e.currentTarget.src = 'https://placehold.co/400x400/1e293b/64748b?text=Bild+nicht+ladbar'
+                                e.currentTarget.className = 'w-full h-full object-cover opacity-50'
                               }}
                             />
                             <button
@@ -438,7 +431,7 @@ export default function HarvestPage() {
                     JSON kopieren
                   </>
                 )}
-              </button>
+            </button>
             </div>
             <div className="p-0 overflow-x-auto">
               <pre className="p-4 text-xs md:text-sm font-mono text-green-400 bg-slate-950 leading-relaxed overflow-auto max-h-[600px]">
