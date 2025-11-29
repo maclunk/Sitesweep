@@ -155,6 +155,9 @@ const UrlInputSection = ({
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
           <strong>Fehler:</strong> {error}
+          <p className="text-xs text-red-600 mt-2">
+            Bitte überprüfen Sie die URL und versuchen Sie es erneut. Bei weiteren Problemen kontaktieren Sie uns gerne.
+          </p>
         </div>
       )}
     </form>
@@ -241,7 +244,8 @@ export default function Home() {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
-        throw new Error(errorData.error || `HTTP ${response.status}: Fehler beim Starten des Scans`)
+        console.error('[Frontend] HTTP Error:', response.status, errorData)
+        throw new Error(errorData.error || errorData.details || `HTTP ${response.status}: Fehler beim Starten des Scans`)
       }
 
       const data = await response.json()
@@ -252,6 +256,7 @@ export default function Home() {
       
       // Check if we have a complete result
       if (resultData.status === 'done' || resultData.score !== undefined) {
+        console.log('[Frontend] Setting result:', resultData)
         setResult({
           status: resultData.status || 'done',
           score: resultData.score || 0,
@@ -266,20 +271,21 @@ export default function Home() {
           url: resultData.url || normalizedUrl || null,
           lowHangingFruit: resultData.lowHangingFruit || null,
         })
+        setLoading(false)
+        setIsScanning(false)
       } else if (resultData.error) {
+        console.error('[Frontend] Backend returned error:', resultData.error)
         throw new Error(resultData.error)
       } else {
-        throw new Error('Ungültige Antwort vom Scanner-Service')
+        console.error('[Frontend] Invalid response structure:', resultData)
+        throw new Error('Ungültige Antwort vom Scanner-Service. Bitte versuchen Sie es erneut.')
       }
-
-      setLoading(false)
-      setIsScanning(false)
     } catch (err) {
-      const errorMessage = err instanceof Error ? err.message : 'Fehler beim Starten des Scans'
+      const errorMessage = err instanceof Error ? err.message : 'Fehler beim Starten des Scans. Bitte versuchen Sie es erneut.'
+      console.error('[Frontend] Error starting scan:', err)
       setError(errorMessage)
       setLoading(false)
       setIsScanning(false)
-      console.error('[Frontend] Error starting scan:', err)
     }
   }
 
