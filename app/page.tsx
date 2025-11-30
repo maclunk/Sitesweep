@@ -95,10 +95,10 @@ const UrlInputSection = ({
     <form onSubmit={handleSubmit} className="space-y-4">
       <div className="flex flex-col sm:flex-row gap-3">
         <input
-          type="url"
+          type="text"
           value={url}
           onChange={handleUrlChange}
-          placeholder="Ihre Website-Adresse (z. B. https://mein-unternehmen.de)"
+          placeholder="z.B. mein-unternehmen.de oder https://mein-unternehmen.de"
           disabled={isScanning || loading}
           autoComplete="url"
           autoCorrect="off"
