@@ -20,7 +20,7 @@ const faqItems: FAQItem[] = [
   },
   {
     question: 'Gehört die Seite mir?',
-    answer: 'Ja, zu 100%. Beim Relaunch gibt es keine monatlichen Mietgebühren für das Design. Der Code gehört vollständig Ihnen.',
+    answer: 'Ja, zu 100%. Der Code gehört vollständig Ihnen und Sie können ihn jederzeit bei einem anderen Anbieter hosten.',
   },
   {
     question: 'Wie schnell geht das?',
@@ -230,7 +230,7 @@ export default function LeistungenPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-700">Bis zu 5 Unterseiten</span>
+                    <span className="text-slate-700">Individuelle Seitenstruktur</span>
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
@@ -246,7 +246,7 @@ export default function LeistungenPage() {
                   </li>
                   <li className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
-                    <span className="text-slate-700 font-semibold">Volles Eigentum (Keine monatlichen Kosten)</span>
+                    <span className="text-slate-700 font-semibold">Volles Eigentum am Code</span>
                   </li>
                 </ul>
 

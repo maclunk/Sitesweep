@@ -141,7 +141,7 @@ export default function UeberUnsPage() {
                   Eigentum statt Miete
                 </h3>
                 <p className="text-slate-600 leading-relaxed">
-                  Wir glauben, dass Ihre Website Ihnen gehören sollte. Bei uns gibt es keine monatlichen Mietkosten für das Design. Nach der Übergabe gehört der Code zu 100 % Ihnen.
+                  Wir glauben, dass Ihre Website Ihnen gehören sollte. Nach der Übergabe gehört der Code zu 100 % Ihnen – Sie haben volle Kontrolle.
                 </p>
               </motion.div>
 
