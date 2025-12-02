@@ -339,7 +339,7 @@ export default function Home() {
                     Gewinnt Ihre Website genügend Kunden?
                   </h1>
                   <p className="text-lg md:text-xl font-medium text-slate-800 leading-relaxed">
-                    Prüfen Sie Ihre Website jetzt kostenlos auf technische Fehler, Sicherheitslücken und Abmahnrisiken.
+                    Der kostenlose Check für Kanzleien, Praxen, Handel & KMU. Finden Sie heraus, was Sie ändern können, um mehr Anfragen zu bekommen und mehr Aufträge zu gewinnen.
                   </p>
                   <p className="text-base text-slate-700 leading-relaxed">
                     Scan kostenlos, Ergebnis sofort, keine Verpflichtung. Wir zeigen Ihnen konkret, wie Sie mehr Besucher zu Kunden machen.
