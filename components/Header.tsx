@@ -65,7 +65,7 @@ export default function Header() {
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Infos
+              Ratgeber
             </Link>
             <Link 
               href="/ueber-uns" 

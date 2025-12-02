@@ -9,7 +9,7 @@ import Footer from '@/components/Footer'
 import { getCalendlyLink } from '@/lib/calendly'
 import { BenchmarkComparison } from '@/components/BenchmarkComparison'
 import StickyCta from '@/components/StickyCta'
-import { Search, ArrowRight, Gauge, ShieldCheck, Layout } from 'lucide-react'
+import { Search, ArrowRight, Gauge, ShieldCheck, Layout, Tag, Heading, Image, FileText, Zap, Link2, Lock, AlertTriangle, MousePointer, Navigation, Phone, Smartphone } from 'lucide-react'
 
 interface Issue {
   id: string
@@ -339,7 +339,7 @@ export default function Home() {
                     Gewinnt Ihre Website genügend Kunden?
                   </h1>
                   <p className="text-lg md:text-xl font-medium text-slate-800 leading-relaxed">
-                    Der kostenlose Check für Kanzleien, Praxen, Handel & KMU. Finden Sie heraus, was Sie ändern können, um mehr Anfragen zu bekommen und mehr Aufträge zu gewinnen.
+                    Prüfen Sie Ihre Website jetzt kostenlos auf technische Fehler, Sicherheitslücken und Abmahnrisiken.
                   </p>
                   <p className="text-base text-slate-700 leading-relaxed">
                     Scan kostenlos, Ergebnis sofort, keine Verpflichtung. Wir zeigen Ihnen konkret, wie Sie mehr Besucher zu Kunden machen.
@@ -361,114 +361,140 @@ export default function Home() {
               </div>
             </section>
 
-            {/* 2. "Was wir prüfen" - Feature Sections als professionelle Audit-Kategorien */}
-            <section className="max-w-6xl mx-auto px-4 space-y-8 py-16">
+            {/* 2. "Was wir prüfen" - Feature Sections als moderne Card-Grids */}
+            <section className="max-w-6xl mx-auto px-4 py-16 space-y-16">
+              
               {/* Kategorie 1: Sichtbarkeit & SEO */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6 text-center md:text-left">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
-                    <Search className="w-6 h-6 text-slate-700" strokeWidth={2} />
+              <div>
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-blue-50 mb-4">
+                    <Search className="w-7 h-7 text-blue-600" strokeWidth={2} />
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
-                      Sichtbarkeit & Google
-                    </h2>
-                    <p className="text-sm text-slate-600 mb-4">
-                      Bessere Platzierung bei Google führt zu mehr Besuchern und mehr Anfragen.
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Meta-Tags und Titel</p>
-                        <p className="text-sm text-slate-600">Gute Titel in den Google-Suchergebnissen bringen mehr Besucher auf Ihre Seite</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Strukturierte Überschriften</p>
-                        <p className="text-sm text-slate-600">Klare Überschriften helfen Google, Ihre Seite besser zu verstehen. Das bringt mehr Besucher.</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Alt-Texte für Bilder</p>
-                        <p className="text-sm text-slate-600">Bilder mit Beschreibungen helfen Google, Ihre Seite besser zu finden. Das bringt mehr Besucher.</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Robots.txt und Sitemap</p>
-                        <p className="text-sm text-slate-600">Richtige Einstellungen sorgen dafür, dass Google alle wichtigen Seiten findet.</p>
-                      </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                    Sichtbarkeit & Google
+                  </h2>
+                  <p className="text-slate-600 max-w-2xl mx-auto">
+                    Werden Sie von potenziellen Kunden gefunden? Wir prüfen alle SEO-relevanten Faktoren.
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                      <Tag className="w-5 h-5 text-blue-600" />
                     </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Meta-Tags & Titel</h3>
+                    <p className="text-sm text-slate-600">Optimierte Titel für bessere Klickraten in den Suchergebnissen</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                      <Heading className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Überschriften-Struktur</h3>
+                    <p className="text-sm text-slate-600">Klare H1-H6 Hierarchie für besseres Google-Ranking</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                      <Image className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Bilder Alt-Texte</h3>
+                    <p className="text-sm text-slate-600">Beschreibungen für barrierefreie & SEO-optimierte Bilder</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-blue-50 flex items-center justify-center mb-3">
+                      <FileText className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Sitemap & Robots</h3>
+                    <p className="text-sm text-slate-600">Technische SEO-Dateien für optimale Indexierung</p>
                   </div>
                 </div>
               </div>
 
               {/* Kategorie 2: Technischer Zustand */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6 text-center md:text-left">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
-                    <Gauge className="w-6 h-6 text-slate-700" strokeWidth={2} />
+              <div>
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-amber-50 mb-4">
+                    <Gauge className="w-7 h-7 text-amber-600" strokeWidth={2} />
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
-                      Technischer Zustand
-                    </h2>
-                    <p className="text-sm text-slate-600 mb-4">
-                      Schnelle Ladezeiten und saubere Technik sorgen dafür, dass Besucher bleiben und nicht sofort wegklicken.
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Ladezeiten und Performance</p>
-                        <p className="text-sm text-slate-600">Schnelle Seiten halten Besucher länger – mehr Zeit, um sie zu Kunden zu machen</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">404-Fehler und defekte Links</p>
-                        <p className="text-sm text-slate-600">Funktionierende Links führen Besucher zu Ihren Angeboten statt zu Fehlerseiten</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">SSL-Verschlüsselung</p>
-                        <p className="text-sm text-slate-600">Sichere Verbindungen schaffen Vertrauen. Ohne sie warnen Browser Besucher, was viele abschreckt.</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Fehlerhafte Bilder und Ressourcen</p>
-                        <p className="text-sm text-slate-600">Vollständige Inhalte wirken seriös und halten Besucher auf der Seite</p>
-                      </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                    Technik & Sicherheit
+                  </h2>
+                  <p className="text-slate-600 max-w-2xl mx-auto">
+                    Schnelle Ladezeiten und sichere Verbindungen sind Pflicht. Wir decken technische Mängel auf.
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-3">
+                      <Zap className="w-5 h-5 text-amber-600" />
                     </div>
-                    <div className="mt-4 pt-4 border-t border-slate-100">
-                      <p className="text-sm text-slate-600">
-                        <strong className="text-slate-900">Recht & Datenschutz:</strong> Impressum, DSGVO und Cookie-Konformität werden ebenfalls geprüft – wichtig für Vertrauen und rechtliche Sicherheit.
-                      </p>
+                    <h3 className="font-semibold text-slate-900 mb-1">Ladegeschwindigkeit</h3>
+                    <p className="text-sm text-slate-600">Core Web Vitals und Performance-Metriken im Check</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-3">
+                      <Link2 className="w-5 h-5 text-amber-600" />
                     </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Defekte Links</h3>
+                    <p className="text-sm text-slate-600">404-Fehler und tote Links, die Besucher verlieren</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-3">
+                      <Lock className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">SSL-Zertifikat</h3>
+                    <p className="text-sm text-slate-600">HTTPS-Verschlüsselung für Vertrauen & Sicherheit</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-amber-50 flex items-center justify-center mb-3">
+                      <AlertTriangle className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Recht & DSGVO</h3>
+                    <p className="text-sm text-slate-600">Impressum, Datenschutz und Cookie-Konformität</p>
                   </div>
                 </div>
               </div>
 
               {/* Kategorie 3: UX & Design */}
-              <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6 md:p-8">
-                <div className="flex flex-col md:flex-row items-center md:items-start gap-4 mb-6 text-center md:text-left">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-slate-50 flex items-center justify-center">
-                    <Layout className="w-6 h-6 text-slate-700" strokeWidth={2} />
+              <div>
+                <div className="text-center mb-8">
+                  <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-emerald-50 mb-4">
+                    <Layout className="w-7 h-7 text-emerald-600" strokeWidth={2} />
                   </div>
-                  <div className="flex-1">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-1">
-                      UX & Design
-                    </h2>
-                    <p className="text-sm text-slate-600 mb-4">
-                      Einfache Bedienung und klare Buttons führen zu mehr Anfragen und Bestellungen.
-                    </p>
-                    <div className="grid md:grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Klarer Call-to-Action</p>
-                        <p className="text-sm text-slate-600">Klare Buttons wie 'Jetzt anfragen' führen Besucher direkt zum Kontakt</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Klare Wege zum Kontakt</p>
-                        <p className="text-sm text-slate-600">Logische Struktur, damit Besucher einfach zu Kunden werden</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Klickbare Kontaktdaten</p>
-                        <p className="text-sm text-slate-600">Klickbare Telefonnummern und E-Mail-Adressen machen Kontaktaufnahme so einfach wie möglich</p>
-                      </div>
-                      <div>
-                        <p className="text-base font-medium text-slate-900 mb-1">Mobile Nutzer optimal abholen</p>
-                        <p className="text-sm text-slate-600">Optimierung für Handys sorgt dafür, dass auch Smartphone-Nutzer problemlos zu Kunden werden</p>
-                      </div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">
+                    UX & Nutzerführung
+                  </h2>
+                  <p className="text-slate-600 max-w-2xl mx-auto">
+                    Führen Sie Besucher gezielt zur Kontaktaufnahme? Wir analysieren die User Experience.
+                  </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3">
+                      <MousePointer className="w-5 h-5 text-emerald-600" />
                     </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Call-to-Actions</h3>
+                    <p className="text-sm text-slate-600">Klare Handlungsaufforderungen für mehr Anfragen</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3">
+                      <Navigation className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Navigation</h3>
+                    <p className="text-sm text-slate-600">Logische Struktur für einfache Orientierung</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3">
+                      <Phone className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Kontaktdaten</h3>
+                    <p className="text-sm text-slate-600">Klickbare Telefon- und E-Mail-Links</p>
+                  </div>
+                  <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:shadow-md transition-shadow">
+                    <div className="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center mb-3">
+                      <Smartphone className="w-5 h-5 text-emerald-600" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900 mb-1">Mobile Optimierung</h3>
+                    <p className="text-sm text-slate-600">Responsive Design für alle Geräte</p>
                   </div>
                 </div>
               </div>
