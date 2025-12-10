@@ -9,7 +9,7 @@ import Footer from '@/components/Footer'
 import { getCalendlyLink } from '@/lib/calendly'
 import { BenchmarkComparison } from '@/components/BenchmarkComparison'
 import StickyCta from '@/components/StickyCta'
-import { Search, ArrowRight, Gauge, ShieldCheck, Layout, Tag, Heading, Image, FileText, Zap, Link2, Lock, AlertTriangle, MousePointer, Navigation, Phone, Smartphone, TrendingUp, Globe } from 'lucide-react'
+import { Search, ArrowRight, Gauge, ShieldCheck, Layout, Tag, Heading, Image, FileText, Zap, Link2, Lock, AlertTriangle, MousePointer, Navigation, Phone, Smartphone } from 'lucide-react'
 import DomainRadarForm from '@/components/DomainRadarForm'
 
 interface Issue {
@@ -502,42 +502,9 @@ export default function Home() {
             </section>
 
             {/* Domain Radar Lead Magnet Section */}
-            <section className="py-16 md:py-20 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
-              {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute inset-0" style={{
-                  backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.3) 1px, transparent 0)`,
-                  backgroundSize: '40px 40px'
-                }} />
-              </div>
-              
-              <div className="max-w-4xl mx-auto px-4 relative">
+            <section className="py-16 md:py-20 bg-slate-50">
+              <div className="max-w-4xl mx-auto px-4">
                 <DomainRadarForm />
-                
-                {/* Trust Section */}
-                <div className="mt-12 grid md:grid-cols-3 gap-6">
-                  <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700/50">
-                    <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center mb-3">
-                      <Link2 className="w-5 h-5 text-emerald-400" />
-                    </div>
-                    <h3 className="font-semibold text-white mb-1">Bestehende Backlinks</h3>
-                    <p className="text-sm text-slate-400">Alte Domains haben oft Backlinks von Zeitungen & Branchenportalen.</p>
-                  </div>
-                  <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700/50">
-                    <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center mb-3">
-                      <TrendingUp className="w-5 h-5 text-blue-400" />
-                    </div>
-                    <h3 className="font-semibold text-white mb-1">Domain Authority</h3>
-                    <p className="text-sm text-slate-400">Google vertraut älteren Domains mehr – starten Sie mit Vorsprung.</p>
-                  </div>
-                  <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700/50">
-                    <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center mb-3">
-                      <Globe className="w-5 h-5 text-amber-400" />
-                    </div>
-                    <h3 className="font-semibold text-white mb-1">Regionale Keywords</h3>
-                    <p className="text-sm text-slate-400">Domains wie "anwalt-aachen.de" sind Gold wert für lokales SEO.</p>
-                  </div>
-                </div>
               </div>
             </section>
 
