@@ -33,7 +33,7 @@ export default function ImpressumPage() {
           <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-4">Umsatzsteuer-ID</h2>
           <p className="text-lg">
             Umsatzsteuer-Identifikationsnummer gemäß § 27 a Umsatzsteuergesetz:<br />
-            <span className="text-slate-600 italic">wird nachgereicht</span>
+            <strong>DE458520625</strong>
           </p>
           
           <h2 className="text-2xl font-semibold text-slate-900 mt-8 mb-4">Redaktionell verantwortlich</h2>
